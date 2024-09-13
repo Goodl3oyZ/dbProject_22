@@ -11,20 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('emotions', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->text('description')->nullable();
-        $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->date('birthdate')->nullable()->after('email_verified_at');
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('emotions');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('birthdate');
+        });
     }
 };

@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diary_entry_emotions', function (Blueprint $table) { 
+        Schema::create('diary_entry_emotions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('diary_entry_id')->constrained('diary_entries')->onDelete('cascade');
             $table->foreignId('emotion_id')->constrained('emotions')->onDelete('cascade');
-            $table->integer('intensity'); // Assuming intensity is a scale of emotion, e.g. from 1 to 10.
+            $table->integer('intensity'); // Assuming intensity is a scale of emotion, e.g., from 1 to 10.
             $table->timestamps();
         });
     }
-
+    
 
     /**
      * Reverse the migrations.

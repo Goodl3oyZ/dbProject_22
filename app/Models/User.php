@@ -7,10 +7,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
 class User extends Authenticatable
 {
+    public function bio(): HasOne
+    {
+        return $this->hasOne(UserBio::class, 'user_id');
+    }
+
+    public function diaryEntries()
+    {
+        return $this->hasMany(DiaryEntry::class);
+    }
+
+    public function personalityType(): BelongsTo
+    {
+        return $this->belongsTo(PersonalityType::class, 'personality_id');
+    }
+
     use HasFactory, Notifiable;
 
     /**
@@ -23,6 +39,7 @@ class User extends Authenticatable
         'email',
         'password',
         'birthdate',
+        'personality_type_id',
         'profile_photo',
     ];
 
@@ -48,16 +65,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function bio(): HasOne
-    {
-        return $this->hasOne(UserBio::class, 'user_id');
-    }
-    
-    public function diaryEntries()
-    {
-        return $this->hasMany(DiaryEntry::class);
-    }
-
-    
-    
 }

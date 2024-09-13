@@ -7,6 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class DiaryEntry extends Model
 {
+    public function emotions()
+    {
+        return $this->belongsToMany(
+            Emotion::class,
+            'diary_entry_emotions',
+            'diary_entry_id',
+            'emotion_id'
+        )
+            ->withPivot('intensity')
+            ->withTimestamps();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     use HasFactory;
     protected $table = 'diary_entries';
     protected $fillable = ['user_id', 'date', 'content'];
@@ -15,13 +32,4 @@ class DiaryEntry extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-    public function emotions()
-    {
-        return $this->belongsToMany(Emotion::class, 'diary_entry_emotions','diary_entry_id', 'emotion_id')->withPivot('intensity')->withTimestamps();
-    }
-
 }

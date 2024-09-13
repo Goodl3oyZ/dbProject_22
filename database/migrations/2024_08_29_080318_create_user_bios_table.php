@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_bios'  , function (Blueprint $table) {
+        Schema::create('user_bios', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
             $table->text('bio')->nullable();
             $table->timestamps();
+
+            // Adding foreign key constraint with cascade delete
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
