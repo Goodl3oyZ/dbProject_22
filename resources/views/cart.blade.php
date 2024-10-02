@@ -1,28 +1,15 @@
+<head>
+    <title>Human_shop</title>
+    <link rel="icon" href="{{ asset('img/group21.jpg') }}" type="image/jpeg">
+</head>
 <x-app-layout>
-    @section('content')
-    <div class="container mx-auto">
-        <h1 class="text-2xl font-bold mb-6">Shopping Cart</h1>
-
-        @if (session('status'))
-            <div class="bg-green-500 text-white p-4 mb-4 rounded">
-                {{ session('status') }}
+    <div class="grid  lg:grid-cols-3 gap-6 mt-4 px-6 p-4">
+        @foreach ($carts as $cart)
+            <div class=" w-auto h-32 bg-gray-800 rounded-lg p-4 text-center">
+                <img class="object-cover w-40 h-40 mx-auto rounded" src="{{ asset($product->products_photo) }}"
+                    alt="{{ $product->productName }}">
             </div>
-        @endif
 
-
-        <table class="min-w-full bg-white">
-            <thead>
-                <tr>
-                    <th class="py-2 px-4 border-b">Product</th>
-                    <th class="py-2 px-4 border-b">Quantity</th>
-                    <th class="py-2 px-4 border-b">Price</th>
-                    <th class="py-2 px-4 border-b">Total</th>
-                    <th class="py-2 px-4 border-b">Actions</th>
-                </tr>
-            </thead>
-
-
-
+        @endforeach
     </div>
-    @endsection
 </x-app-layout>

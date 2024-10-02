@@ -1,3 +1,7 @@
+<head>
+    <title>Human_shop</title>
+    <link rel="icon" href="{{ asset('img/group21.jpg') }}" type="image/jpeg">
+</head>
 <x-guest-layout>
 
     <!-- Session Status -->
@@ -33,6 +37,7 @@
                 <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
             </label>
         </div>
+
 
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))

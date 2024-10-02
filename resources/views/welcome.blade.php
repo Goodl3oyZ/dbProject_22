@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Human_shop</title>
-
+    <link rel="icon" href="{{ asset('img/group21.jpg') }}" type="image/jpeg">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -916,77 +916,220 @@
                 --tw-ring-color: rgb(255 255 255 / var(--tw-ring-opacity))
             }
         }
+
+        .arrow {
+            display: inline-block;
+            margin-left: 0.5rem;
+            transition: transform 0.3s;
+        }
+
+        .view-more:hover .arrow {
+            transform: translateX(5px);
+        }
     </style>
 </head>
 
-<body class="font-sans antialiased">
-    <div class="bg-gray-50 text-black/30 dark:bg-black dark:text-white/50">
+<body class="font-sans antialiased ">
+    <div style="background-color: #111827; color: rgba(255, 255, 255, 0.5);">
         <div class="relative min-h-screen  ">
             <div class="relative w-full max-w-7xl ">
-                <header>
-                    <div>
-                        <div class="flex items-center px-6 "><!-- Left: HumanShop Name -->
-                            <div class="flex items-center">
-                                <span class="mt-6 text-2xl font-bold text-white lg:text-8xl">HumanShop</span>
-                            </div>
-                            <!-- Right: Login & Register -->
-                            @if (Route::has('login'))
-                                <nav class="flex flex-1 justify-end mt-6">
-                                    @auth
-                                        <a href="{{ url('/dashboard') }}"
-                                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                            Dashboard
-                                        </a>
-                                    @else
-                                        <a href="{{ route('login') }}"
-                                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                            Log in
-                                        </a>
+                <div class="flex items-center p-6"
+                    style="background-color: #1F2937; color: rgba(255, 255, 255, 0.5); border-bottom: 1px solid #fff;">
 
-                                        @if (Route::has('register'))
-                                            <a href="{{ route('register') }}"
-                                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                                Register
-                                            </a>
-                                        @endif
-                                    @endauth
-                                </nav>
-                            @endif
-                        </div>
-                    </div>
-                    <!-- display  news about our shop-->
-                    <div class="flex flex-col justify-center">
-                        <div class="flex flex-start justify-center">
-                            <div class="px-6 flex justify-end " style="width: 100rem ">
-                                <img class="mt-6" src="{{ asset('img/humanShop.jpg') }}" alt="Human Shop">
-
-                            </div>
-                            <div class="text-center py-16 px-6 ">Lorem ipsum dolor sit amet consectetur adipisicing
-                                elit. Aliquam debitis sequi deserunt, velit eaque natus possimus nobis fugiat incidunt
-                                praesentium, doloremque consequuntur vel. Vitae deleniti est quisquam, ea aut sapiente.
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus illo labore suscipit
-                                aspernatur. Debitis voluptate cumque ullam omnis quia placeat rem sit, provident maxime
-                                fuga
-                                dicta tempora recusandae facilis aspernatur. Lorem, ipsum dolor sit amet consectetur
-                                adipisicing elit. Error, minus voluptatibus reiciendis obcaecati, sit ad inventore enim
-                                velit tempora assumenda unde vel amet corrupti odit animi ex! Earum, natus omnis.</div>
-                        </div>
-                        <div class="text-center py-16 px-6 ">Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Aliquam debitis sequi deserunt, velit eaque natus possimus nobis fugiat incidunt
-                            praesentium, doloremque consequuntur vel. Vitae deleniti est quisquam, ea aut sapiente.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus illo labore suscipit
-                            aspernatur. Debitis voluptate cumque ullam omnis quia placeat rem sit, provident maxime
-                            fuga
-                            dicta tempora recusandae facilis aspernatur. Lorem, ipsum dolor sit amet consectetur
-                            adipisicing elit. Error, minus voluptatibus reiciendis obcaecati, sit ad inventore enim
-                            velit tempora assumenda unde vel amet corrupti odit animi ex! Earum, natus omnis.</div>
-                    </div>
+                    <img style="height: 3rem; width: 3rem;" src="{{ asset('img/group21.jpg') }}" alt="Human Shop">
 
 
-                    <footer class="py- text-center text-sm text-black dark:text-white/70 items-end  justify-end">
-                        Human_shop Project Database •2567
-                    </footer>
+
+                    <span class="px-6 text-2xl font-bold text-white lg:text-8xl">HumanShop</span>
+                    <!-- Right: Login & Register -->
+                    @if (Route::has('login'))
+                        <nav class="flex flex-1 justify-end gap-4">
+                            @auth
+                                <a href="{{ url('/dashboard') }}"
+                                    style=" border: 1px solid #fff;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        border-radius: 8px;"
+                                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                                    Dashboard
+                                </a>
+                            @else
+                                <a href="{{ route('login') }}"
+                                    style=" border: 1px solid #fff;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        border-radius: 8px;"
+                                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                                    Log in
+                                </a>
+
+                                @if (Route::has('register'))
+                                    <a href="{{ route('register') }}"
+                                        style=" border: 1px solid #fff;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            border-radius: 8px;"
+                                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                                        Register
+                                    </a>
+                                @endif
+                            @endauth
+                        </nav>
+                    @endif
+                </div>
             </div>
+            <!-- display  news about our shop-->
+            <div class="container mx-auto p-6">
+                <div class="text-3xl font-bold  text-white mt-2">WELCOME to HumanShop</div>
+
+                <div class="flex flex-wrap  gap-4 mt-6 p-6"
+                    style="width: auto; overflow-x: auto; border: 1px solid #9ca3af;">
+                    <div class="text-2xl font-bold  text-white ">Our Product</div>
+                    <!-- Product 1 -->
+                    <div
+                        style="background-color: #1F2937; color: rgba(255, 255, 255, 0.5); border: 1px solid #fff; border-radius: 3px;">
+                        <div style="height: auto; width: 10rem; max-height: 20rem; overflow-y: hidden;"
+                            class="flex flex-col items-center p-6 bg-gray-800 rounded shadow">
+                            <div class="mb-2">
+                                <img style="height: 10rem; width: 10rem;" src="{{ asset('img/heart.jpg') }}"
+                                    alt="Product 1" class="h-full w-full object-cover rounded-lg">
+                            </div>
+                            <h2 class="text-lg font-semibold">Heart</h2>
+                            <p class="text-sm">หัวใจมือ 2 สภาพดี,สวย พึ่งได้มาสดๆร้อนๆ</p>
+                        </div>
+                    </div>
+                    <!-- Product 2 -->
+                    <div
+                        style="background-color: #1F2937; color: rgba(255, 255, 255, 0.5); border: 1px solid #fff; border-radius: 3px;">
+                        <div style="height: auto; width: 10rem; max-height: 20rem; overflow-y: hidden;"
+                            class="flex flex-col items-center p-6 bg-gray-800 rounded shadow">
+                            <div class="mb-2">
+                                <img style="height: 10rem; width: 10rem;" src="{{ asset('img/kidney.jpg') }}"
+                                    alt="Product 1" class="h-full w-full object-cover rounded-lg">
+                            </div>
+                            <h2 class="text-lg font-semibold">Kidney</h2>
+                            <p class="text-sm" style="overflow-y:auto;">ไตสะอาด ปราศจากของเหลวจำพวกปัสสาวะ</p>
+                        </div>
+                    </div>
+                    <!-- Product 3 -->
+                    <div
+                        style="background-color: #1F2937; color: rgba(255, 255, 255, 0.5); border: 1px solid #fff ; border-radius: 3px;">
+                        <div style="height: auto; width: 10rem; max-height: 20rem; overflow-y: hidden;"
+                            class="flex flex-col items-center p-6 bg-gray-800 rounded shadow">
+                            <div class="mb-2">
+                                <img style="height: 10rem; width: 10rem;" src="{{ asset('img/lung.jpg') }}"
+                                    alt="Product 1" class="h-full w-full object-cover rounded-lg">
+                            </div>
+                            <h2 class="text-lg font-semibold">Lung</h2>
+                            <p class="text-sm" style="overflow-y-auto;">
+                                ปอดหมู สีสวย ชมพูอมเขียว
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Product 4 -->
+                    <div
+                        style="background-color: #1F2937; color: rgba(255, 255, 255, 0.5); border: 1px solid #fff ; border-radius: 3px;">
+                        <div style="height: auto; width: 10rem; max-height: 20rem; overflow-y: hidden;"
+                            class="flex flex-col items-center p-6 bg-gray-800 rounded shadow">
+                            <div class="mb-2">
+                                <img style="height: 10rem; width: 10rem;" src="{{ asset('img/liver.jpg') }}"
+                                    alt="Product 1" class="h-full w-full object-cover rounded-lg">
+                            </div>
+                            <h2 class="text-lg font-semibold">Liver</h2>
+                            <p class="text-sm" style="overflow-y-auto;">
+                                ตับ ตับ ตับ ตับ ตัวพี่ชอบกินตับเด็ก
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Product 5 -->
+                    <div
+                        style="background-color: #1F2937; color: rgba(255, 255, 255, 0.5); border: 1px solid #fff ; border-radius: 3px;">
+                        <div style="height: auto; width: 10rem; max-height: 20rem; overflow-y: hidden;"
+                            class="flex flex-col items-center p-6 bg-gray-800 rounded shadow">
+                            <div class="mb-2">
+                                <img style="height: 10rem; width: 10rem;" src="{{ asset('img/bladder.jpg') }}"
+                                    alt="Product 1" class="h-full w-full object-cover rounded-lg">
+                            </div>
+                            <h2 class="text-lg font-semibold">Bladder</h2>
+                            <p class="text-sm" style="overflow-y-auto;">
+                                กระเพาะปัสสาวะ เหมาะสำหรับคนที่ชอบอั้นฉี่เป็นเวลานานๆ
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Product 6 -->
+                    <div
+                        style="background-color: #1F2937; color: rgba(255, 255, 255, 0.5); border: 1px solid #fff ; border-radius: 3px;">
+                        <div style="height: auto; width: 10rem; max-height: 20rem; overflow-y: hidden;"
+                            class="flex flex-col items-center p-6 bg-gray-800 rounded shadow">
+                            <div class="mb-2">
+                                <img style="height: 10rem; width: 10rem;" src="{{ asset('img/intestine.jpg') }}"
+                                    alt="Product 1" class="h-full w-full object-cover rounded-lg">
+                            </div>
+                            <h2 class="text-lg font-semibold">Intestine</h2>
+                            <p class="text-sm" style=" overflow-y: auto ;">
+                                ไส้ย่าง สันป่าข่อย
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Product 7 -->
+                    <div
+                        style="background-color: #1F2937; color: rgba(255, 255, 255, 0.5); border: 1px solid #fff ; border-radius: 3px;">
+                        <div style="height: auto; width: 10rem; max-height: 20rem; overflow-y: hidden;"
+                            class="flex flex-col items-center p-6 bg-gray-800 rounded shadow">
+                            <div class="mb-2">
+                                <img style="height: 10rem; width: 10rem;" src="{{ asset('img/bone marrow.jpg') }}"
+                                    alt="Product 1" class="h-full w-full object-cover rounded-lg">
+                            </div>
+                            <h2 class="text-lg font-semibold">Bone marrow</h2>
+                            <p class="text-sm" style="overflow-y-auto;">
+                                ไขกระดูก สำหรับปรุงอาหาร
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- View more -->
+                    <div class="flex justify-center items-center">
+                        <a href="{{ route('humanShop.shoplist') }}" class="mt-2 text-blue-400 hover:underline">View
+                            More <span class="arrow">➔</span></a>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- other detail for our company -->
+            <div class="flex items-center justify-center px-6 py-16"> " . . . Lorem ipsum dolor sit amet consectetur
+                adipisicing
+                elit.
+                Quod
+                numquam facilis fugit veritatis tempora
+                maxime voluptates dolor, molestias labore vitae incidunt tenetur commodi est impedit eaque magnam sit
+                omnis consequuntur
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe perspiciatis laudantium eaque distinctio
+                eos voluptate quaerat ullam eveniet cum molestiae ducimus porro, excepturi rem quo a dolores impedit
+                quibusdam esse! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minima doloremque, ullam
+                corrupti fuga accusantium fugiat. Iure eum sed magni? Consectetur libero adipisci cumque. Et in pariatur
+                quidem porro natus similique.
+                Dicta eum ipsa dolores fuga veniam. Ullam illo, doloremque nisi, architecto ab libero cumque aperiam
+                inventore assumenda quam quibusdam nam doloribus ipsam illum rem eveniet praesentium dolore reiciendis.
+                Corporis, autem.
+                Eligendi debitis doloribus tempore, autem voluptatibus quod in dignissimos ut similique delectus magnam
+                pariatur placeat quo quisquam iste eos, architecto excepturi nulla hic corporis doloremque dolorem
+                laborum sed. Eos, quibusdam.
+                Et aperiam praesentium soluta, quo corrupti incidunt similique laborum explicabo, ea nobis at commodi!
+                Suscipit quia pariatur corrupti repellat accusantium dolorum, dolore illum ipsum, facere voluptatem
+                sunt, sequi eligendi nostrum?</div>
+            <div class="text-2xl font-bold  text-white  p-6 text-center"
+                style=" background-color: #FF2D20; width: 30rem; border: 3px solid white;">
+                Promotion
+                เด็ดสำหรับลูกค้าใหม่ทุกท่าน</div>
+            <div class="flex flex-col items-start justify-center px-6 py-10">
+                <li>10%</li>
+                <li>20%</li>
+                <li>30%</li>
+                <li>40%</li>
+                <li>90%</li>
+            </div>
+
+            <footer class=" text-center text-sm text-black dark:text-white/70 items-end  justify-end p-6">
+                Human_shop Project Database • 2567 :: group21
+
+            </footer>
         </div>
+    </div>
     </div>
 </body>

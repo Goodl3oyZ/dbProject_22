@@ -1,12 +1,12 @@
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-9xl mx-auto px-6  sm:px-2 lg:px-2">
         <div class="flex justify-between h-20">
             <div class="flex ">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{route('dashboard')}}">
-                        <img class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"  src="{{ asset('img/humanShop.jpg') }}" alt="Human Shop">
+                        <img class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"  src="{{ asset('img/group21.jpg') }}" alt="Human Shop">
                     </a>
                 </div>
 
@@ -32,12 +32,12 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
             <!-- order -->
-            <span class=" underline text-sm text-gray-600 dark:text-gray-400">รายการคำสั่งซื้อของคุณ</span>
+            <span class=" underline text-sm text-gray-600 dark:text-gray-400 px-2">รายการคำสั่งซื้อของคุณ</span>
             <!--cart-->
-            <a href="{{ route('cart')}}"><img src="img/cart.jpg" class="w-auto h-6  " alt="Sample Image"/></a>
+            <div class="px-4"><a href="{{ route('cart')}}"><img src="img/cart.jpg" class="w-auto h-6 px-2" alt="Sample Image" style=" border: 1px solid #fff; border-radius: 12px;"/></a></div>
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger"> 
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                        <button  style=" border: 1px solid #fff;border-radius: 8px;" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                             <div>Name : {{ Auth::user()->userName }}</div>
                             <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile Photo"
                                 class="ml-3 object-fit w-auto h-9 rounded-full">
