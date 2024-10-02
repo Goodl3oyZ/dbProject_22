@@ -7,6 +7,7 @@ use App\Models\User; //add this line
 use App\Models\UserBio;
 use Illuminate\Support\Facades\Auth; //add this line
 use Illuminate\Support\Facades\Storage; //add this line
+use App\Models\PersonalityType; // Import PersonalityType model
 
 class UserController extends Controller
 {
@@ -40,24 +41,49 @@ class UserController extends Controller
     public function updateProfilePhoto(Request $request)
     {
         $request->validate([
-            'profilephoto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
         $user = Auth::user();
-
         if ($request->file('profile_photo')) {
+            $fileName = time() . '_' . $request->file('profile_photo')->getClientOriginalName();
+            $filePath = $request->file('profile_photo')->storeAs('uploads/profile_photos', $fileName, 'public');
             // Delete old photo if exists
             if ($user->profile_photo) {
                 Storage::disk('public')->delete($user->profile_photo);
             }
-
-            $fileName = time() . '' . $request->file('profile_photo')->getClientOriginalName();
-            $filePath = $request->file('profile_photo')->storeAs('uploads/profile_photos', $fileName, 'public');
-
             $user->profile_photo = $filePath;
             $user->save();
         }
-
         return redirect()->route('profile.edit')->with('status', 'profile-photo-updated');
+    }
+
+    public function showType()
+    {
+        // ดึงข้อมูลทั้งหมดจากตาราง personality_types
+        $personalityTypes = PersonalityType::all();
+
+        // ดึงข้อมูลผู้ใช้ที่ล็อกอิน
+        $user = auth()->user();
+
+        // ส่งตัวแปรไปยัง view
+        return view('profile.show-type', compact('personalityTypes', 'user'));
+    }
+
+    public function updateType(Request $request)
+    {
+        $request->validate([
+            'personality_type_id' => 'required|exists:personality_types,id',
+        ]);
+
+        $user = auth()->user();
+        $user->personality_id = $request->input('personality_type_id');
+        $user->save();
+
+        return redirect()->route('profile.show-type')->with('status', 'Personality type updated successfully!');
+    }
+    public function showProfile()
+    {
+        $user = Auth::user();
+        return view('profile.show', compact('user'));
     }
 }

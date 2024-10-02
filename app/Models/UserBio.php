@@ -13,14 +13,14 @@ class UserBio extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
- use HasFactory;
- protected $table = 'user_bios';
- protected $fillable = [
- 'user_id',
- 'bio',
- ];
- protected $casts = [
- 'created_at' => 'datetime',
- 'updated_at' => 'datetime',
- ];
+    use HasFactory;
+    protected $table = 'user_bios';
+    protected $fillable = [
+        'user_id',
+        'bio',
+    ];
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 }

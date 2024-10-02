@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use App\Models\Cart;
 
 class User extends Authenticatable
 {
@@ -26,6 +26,32 @@ class User extends Authenticatable
     {
         return $this->belongsTo(PersonalityType::class, 'personality_id');
     }
+    public function carts()
+    {
+        return $this->hasOne(Cart::class, 'userId');
+    }
+
+    public function order()
+    {
+        return $this->hasMany(Order::class, 'userId');
+    }
+
+    public function promotion()
+    {
+        return $this->hasMany(Promotion::class, 'userId');
+    }
+
+    public function review()
+    {
+        return $this->hasMany(Review::class, 'userId');
+    }
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            // Automatically create a cart for the newly registered user
+            $user->carts()->create(['amount' => 0]);
+        });
+    }
 
     use HasFactory, Notifiable;
 
@@ -35,11 +61,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'userName',
         'email',
         'password',
         'birthdate',
-        'personality_type_id',
         'profile_photo',
     ];
 

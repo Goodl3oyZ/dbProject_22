@@ -7,24 +7,26 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="mt-1 text-center flex flex-col items-center">
-                        <h1 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight mb-4 ">
-                            Hello, {{ Auth::user()->name }} !
-                        </h1>
-                        <div class="w-64 h-64 mx-auto flex items-center justify-center">
-                            @if(Auth::user()->profile_photo)
-                                <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile Photo" class="rounded-full w-96 h-70">
-                            @else
-                                <p class="text-base text-gray-600 dark:text-gray-400 font-bold text-center">{{ ('No profile photo uploaded.') }}</p>
-                            @endif
+                <div class="flex flex-col items-center justify-center p-6 text-gray-900 dark:text-gray-100">
+                    <p2 class="font-extrabold text-2xl"> {{ __("Hello , ") . Auth::user()->userName }} </p2>
+                    <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                        <div class="max-w-xl ">
+                            <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile Photo"
+                                class=" w-20 h-20 rounded-full">
                         </div>
-
-                        <p class = "font-semibold text-lg text-gray-800 dark:text-gray-200 leading-tight mb-4" >{{ ("This is my mugshot UwU") }}</p>
-                        <p class="font-base text-lg">{{ __("You're logged in!") }}</p>
                     </div>
+                    <p class="font-extrabold flex flex-col items-center justify-center ">
+                    <div>Welcome to Human Shop, where we proudly present everything related to secondhand human
+                        organs.<br> </div>
+                    We are committed to providing you with comprehensive information and services to ensure you have
+                    the best experience in selecting what meets your needs.<br>
+                    </p>
+
+                    {{ __("You're logged in!") }}
                 </div>
             </div>
         </div>
     </div>
+
+
 </x-app-layout>

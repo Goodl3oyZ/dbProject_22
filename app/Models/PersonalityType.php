@@ -24,4 +24,11 @@ class PersonalityType extends Model
     {
         return $this->hasMany(User::class, 'personality_id');
     }
+    public function editType()
+    {
+        $personalityTypes = PersonalityType::all(); // Fetch all personality types
+        $user = auth()->user(); // Get the authenticated user
+
+        return view('profile.edit-type', compact('personalityTypes', 'user'));
+    }
 }

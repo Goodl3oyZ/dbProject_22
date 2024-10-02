@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\PersonalityType; // Import PersonalityType model
+
 
 class ProfileController extends Controller
 {
@@ -56,5 +58,30 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+    public function editType()
+    {
+        // ดึงข้อมูล personality types ทั้งหมด
+        $personalityTypes = PersonalityType::all();
+        // ดึงข้อมูล user ที่ล็อกอินอยู่
+        $user = auth()->user();
+
+        // ส่งตัวแปรไปยัง view
+        return view('profile.edit-type', compact('personalityTypes', 'user'));
+    }
+
+    public function updateType(Request $request)
+    {
+        // Validation
+        $request->validate([
+            'personality_type_id' => 'required|exists:personality_types,id',
+        ]);
+
+        // อัปเดตข้อมูล personality type ของผู้ใช้
+        $user = auth()->user();
+        $user->personality_id = $request->input('personality_type_id');
+        $user->save();
+
+        return redirect()->route('profile.edit-type')->with('status', 'Personality type updated successfully!');
     }
 }

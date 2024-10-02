@@ -45,4 +45,33 @@
             @endif
         });
     </script>
+    <div class="py-6">
+        <center>
+            <!-- Back to Previous Page Button -->
+            <x-secondary-button onclick="disableFormSubmissionAndGoBack()">
+                {{ __('Back to Previous') }}
+            </x-secondary-button>
+        </center>
+    </div>
+
+    <script>
+        // Function to toggle the visibility of the intensity input
+        function toggleIntensityInput(emotionId) {
+            var checkbox = document.getElementById('emotion_' + emotionId);
+            var intensityContainer = document.getElementById('intensity_container_' + emotionId);
+
+            // Show intensity input if checkbox is checked
+            if (checkbox.checked) {
+                intensityContainer.classList.remove('hidden');
+            } else {
+                intensityContainer.classList.add('hidden');
+            }
+        }
+
+        function disableFormSubmissionAndGoBack() {
+            window.onbeforeunload = null; // Disable any beforeunload alert.
+            window.history.back(); // Navigate back to the previous page.
+        }
+    </script>
+
 </x-app-layout>
