@@ -52,9 +52,6 @@ class OrderController extends Controller
             foreach ($cart->products as $product) {
                 // แนบสินค้าไปยังคำสั่งซื้อ
                 $order->products()->attach($product->id, ['quantity' => $product->pivot->quantity]);
-
-                // หักลบสต็อกสินค้าตามจำนวนที่สั่งซื้อ
-                $product->stockQuantity -= $product->pivot->quantity;
                 $product->save();
             }
 
@@ -73,4 +70,3 @@ class OrderController extends Controller
 
 
 }
-

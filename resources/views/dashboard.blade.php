@@ -1,6 +1,6 @@
 <head>
     <title>Human_shop</title>
-        <link rel="icon" href="{{ asset('img/group21.jpg') }}" type="image/jpeg">
+    <link rel="icon" href="{{ asset('img/group21.jpg') }}" type="image/jpeg">
 </head>
 <x-app-layout>
     <x-slot name="header">
@@ -19,12 +19,14 @@
                                 class=" w-20 h-20 rounded-full">
                         </div>
                     </div>
-                    <p class="font-extrabold flex flex-col items-center justify-center ">
-                    <div>Welcome to Human Shop, where we proudly present everything related to secondhand human
-                        organs.<br> </div>
-                    We are committed to providing you with comprehensive information and services to ensure you have
-                    the best experience in selecting what meets your needs.<br>
-                    </p>
+                    <div class="font-extrabold "
+                        style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                        <div>Welcome to Human Shop, where we proudly present everything related to secondhand human
+                            organs.</div>
+                        <div>We are committed to providing you with comprehensive information and services to ensure you
+                            have
+                            the best experience in selecting what meets your needs.</div>
+                    </div>
 
                     {{ __("You're logged in!") }}
                 </div>

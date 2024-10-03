@@ -22,6 +22,7 @@
                             class=" h-32 w-auto object-cover rounded-full" style="width: 8rem; height: 8rem;">
                     @else
                         <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('No profile photo uploaded.') }}</p>
+
                     @endif
                 </div>
             </div>

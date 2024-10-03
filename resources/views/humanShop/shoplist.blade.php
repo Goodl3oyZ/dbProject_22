@@ -16,22 +16,24 @@
                     <p class="text-white text-sm">Stock: {{ $product->stockQuantity }}</p>
 
                     <div class="flex justify-center">
-                        <div class="flex justify-between items-center mt-4 rounded-lg"
+                        <div class="flex justify-between items-center mt-4 rounded-lg gap-4"
                             style="border:1px solid white; padding: 10px; width: 25rem;">
                             <label for="product-input-box-{{ $product->productId }}"
                                 class="text-white mr-2">Quantity:</label>
                             <input type="number" id="product-input-box-{{ $product->productId }}"
-                                class="styled-input mr-2 px-4 w-full" placeholder="จำนวน" min="1"
+                                class="styled-input  px-4 w-full" placeholder="จำนวน" min="1"
                                 max="{{ $product->stockQuantity }}"
                                 onchange="checkStock({{ $product->productId }}, {{ $product->stockQuantity }})">
-
-
                             <span id="stock-warning-{{ $product->productId }}"
                                 style="display: none; color: red;">สินค้ามีไม่เพียงพอ</span>
 
-                            <a href="#" onclick="addToCart({{ $product->productId }})">
-                                <img src="{{ asset('img/cart.jpg') }}" class="w-auto h-6" alt="Add to Cart" />
-                            </a>
+                            <div class="px-4">
+                                <a href="#" onclick="addToCart({{ $product->productId }})">
+                                    <img src="{{ asset('img/cart.jpg') }}" style="object-fit: contain; width: 5rem;"
+                                        alt="Add to Cart" />
+                                </a>
+                            </div>
+
                         </div>
                     </div>
                 </div>

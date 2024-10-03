@@ -3,16 +3,23 @@
     <link rel="icon" href="{{ asset('img/group21.jpg') }}" type="image/jpeg">
 </head>
 <x-app-layout>
-    <div style="display: flex; flex-direction: row; justify-content: center; align-items: start;" class="w-auto">
-        <div class="grid lg:grid-cols-3 gap-6 mt-4 px-6 p-4" style="display: flex; flex-direction: column;">
-            <div style="display: flex; justify-content: center;">
+    <div style="display: flex; flex-direction: row; justify-content: center; align-items: start;" class="w-auto gap-4">
+        <div class="grid lg:grid-cols-3 gap-6 mt-4 px-6 p-4"
+            style="display: flex; flex-direction: column; border: 1px solid white; min-height: 30rem;">
+
+            <div style="display: flex; justify-content: center;" class="mt-4">
                 <div class="text-white text-center text-lg rounded-lg" style="border: 1px solid white; width: 20rem;">
                     รายการสินค้าในตะกร้า
                 </div>
+
             </div>
+            @if($products->isEmpty())
+                <div class="text-white " style="display: flex; justify-content: center;">. . . ยังไม่มีสินค้าในตะกร้า . . .
+                </div>
+            @endif
             <!-- Initialize totalPrice -->
             @php                      
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                $totalPrice = 0;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                $totalPrice = 0;
                 $totalPrice = 0;
                 $discountPercentage = $promotion ? $promotion->discountPercentage : 0;
             @endphp
@@ -54,7 +61,7 @@
         <div>
             <form action="{{ route('checkout') }}" method="POST" class="flex flex-col">
                 @csrf <!-- CSRF protection -->
-                <div class="bg-gray-800 rounded px-6 py-6" style="margin-top: 2rem; border: 1px solid white;">
+                <div class="bg-gray-800 rounded px-6 py-6" style="margin-top: 1rem; border: 1px solid white;">
                     <div class="text-lg p-2 rounded-lg"
                         style="display: flex; justify-content: center; border: 3px solid black; background-color: aliceblue;">
                         ข้อมูลการส่งสินค้า
