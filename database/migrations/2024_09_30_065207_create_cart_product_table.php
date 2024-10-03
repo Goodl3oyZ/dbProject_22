@@ -7,13 +7,13 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('cart_product', function (Blueprint $table) {
-            $table->foreignId('cartId')->constrained('carts', 'cartId')->onDelete('cascade'); // Reference 'cartId'
-            $table->foreignId('productId')->constrained('products', 'productId')->onDelete('cascade'); // Reference 'productId'
-            $table->integer('quantity')->default(0); // Quantity of the product in the cart
+            $table->foreignId('cart_id')->constrained('carts', 'cartId')->onDelete('cascade');
+            $table->foreignId('products_id')->constrained('products', 'productId')->onDelete('cascade');
+            $table->integer('quantity')->default(0);
             $table->timestamps();
 
             // Composite key for uniqueness
-            $table->primary(['cartId', 'productId']);
+            $table->primary(['cart_id', 'products_id']);
         });
     }
 

@@ -12,77 +12,56 @@
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
     </form>
+    <div class="flex">
+        <form method="post" action="{{ route('profile.update') }}" class=" mt-2 gap-6 rounded-md"
+            style="display: flex; flex-direction: row; align-items: center; justify-content: start;  padding: 10px;">
+            @csrf
+            @method('patch')
+            <!-- name -->
+            <div>
+                <x-input-label for="userName" :value="__('Name')" />
+                <x-text-input id="userName" name="userName" type="text" class="mt-1 block w-full"
+                    :value="old('userName', $user->userName)" required autofocus autocomplete="userName" />
+                <x-input-error class="mt-2" :messages="$errors->get('userName')" />
+            </div>
+            <!-- Email -->
+            <div>
+                <x-input-label for="email" :value="__('Email')" />
+                <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="userName" />
+                <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
-        @csrf
-        @method('patch')
-        <!-- name -->
-        <div>
-            <x-input-label for="userName" :value="__('Name')" />
-            <x-text-input id="userName" name="userName" type="text" class="mt-1 block w-full" :value="old('userName', $user->userName)" required autofocus autocomplete="userName" />
-            <x-input-error class="mt-2" :messages="$errors->get('userName')" />
-        </div>
+                @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
+                    <div>
+                        <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
+                            {{ __('Your email address is unverified.') }}
 
-        <!-- Email -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="userName" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
-
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                        {{ __('Your email address is unverified.') }}
-
-                        <button form="send-verification"
-                            class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
-                    </p>
-
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                            {{ __('A new verification link has been sent to your email address.') }}
+                            <button form="send-verification"
+                                class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                                {{ __('Click here to re-send the verification email.') }}
+                            </button>
                         </p>
-                    @endif
+
+                        @if (session('status') === 'verification-link-sent')
+                            <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                                {{ __('A new verification link has been sent to your email address.') }}
+                            </p>
+                        @endif
+                    </div>
+                @endif
+
+            </div>
+            <!-- save button -->
+            <div class=" mt-6" style="display: flex; flex-direction: row;">
+                <x-primary-button>{{ __('Save') }}</x-primary-button>
+
+                <div class="mt-2 px-4"> @if (session('status') === 'profile-updated')
+                    <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
+                        class="text-sm text-blue-600  dark:text-gray-400">{{ __('Saved.') }}</p>
+                @endif
                 </div>
-            @endif
-        </div>
-        <!-- <h4 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Bio Information') }}
-        </h4>
-        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            {{$user->bio->bio ?? 'No bio available'}}
-        </p>
 
-        <h4 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Personality Type Information') }}
-        </h4>
-        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            <strong>{{ $user->personalityType->type ?? 'No type available' }}</strong>{{ ', '}}{{ $user->personalityType->description ?? 'No personality type available' }}
-        </p>
+            </div>
 
-
- -->
-        <div class="flex items-center gap-4 ">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
-
-            @if (session('status') === 'profile-updated')
-                <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-blue-600  dark:text-gray-400">{{ __('Saved.') }}</p>
-            @endif
-            <!--
-            <a href="{{ route('profile.show-bio') }}"
-                class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
-                {{ __('Click to Manage Bio') }}
-            </a>
-
-            <a href="{{ route('profile.show-type') }}"
-                class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-600 active:bg-green-700 focus:outline-none focus:border-green-700 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
-                {{ __('Click to Change PersonalType') }}
-            </a> -->
-
-
-        </div>
-    </form>
+        </form>
+    </div>
 </section>

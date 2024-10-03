@@ -35,9 +35,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/get_conflict', [DiaryEntryController::class, 'get_conflict'])->name('diary.get_conflict');
     Route::resource('diary', DiaryEntryController::class); //add this
     //name  ด้านหลัง คือไปอ่านมาว่าจะให้ไป ดู php จากไฟล์ ไหนใน view
-    Route::get('/products', [ProductController::class, 'index'])->name('humanShop.shoplist');  // Use index method
-
-    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::get('/products', [ProductController::class, 'showProduct'])->name('humanShop.shoplist');  // Use index method
+    // test method
+    Route::get('/cart', [CartController::class, 'showCart'])->name('cart');  // Use index
+    // Route::patch('/products', [CartController::class, 'addToCart'])->name('addtocart');
+    // Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
+    Route::get('/addtocart/{productId}/{quantity}', [CartController::class, 'addToCart'])->name('addtocart');
+    Route::get('/decreasefromcart/{productId}/{quantity}', [CartController::class, 'decreaseFromCart'])->name('decreasefromcart');
+    Route::get('/removefromcart/{productId}', [CartController::class, 'removeFromCart'])->name('removefromcart');
 
 });
 
