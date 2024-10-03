@@ -16,11 +16,4 @@ class Promotion extends Model
     {
         return $this->belongsTo(User::class, 'userId');
     }
-    protected static function booted()
-    {
-        static::created(function ($promotions) {
-            // Automatically create a cart for the newly registered user
-            $promotions->create();
-        });
-    }
 }

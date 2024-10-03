@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Cart;
+use App\Models\Promotion;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -26,6 +27,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(PersonalityType::class, 'personality_id');
     }
+
     public function carts()
     {
         return $this->hasOne(Cart::class, 'userId');
@@ -45,11 +47,23 @@ class User extends Authenticatable
     {
         return $this->hasMany(Review::class, 'userId');
     }
+
     protected static function booted()
     {
         static::created(function ($user) {
             // Automatically create a cart for the newly registered user
             $user->carts()->create(['amount' => 0]);
+
+            // Automatically create a promotion for the newly registered user
+            $discountPercentages = [10, 15, 20, 25, 30];
+            $discount = $discountPercentages[array_rand($discountPercentages)];
+
+            Promotion::create([
+                'userId' => $user->id,
+                'startDate' => Carbon::now(),
+                'endDate' => Carbon::now()->addMonth(),
+                'discountPercentage' => $discount,
+            ]);
         });
     }
 

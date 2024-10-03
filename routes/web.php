@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DiaryEntryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CustomerInfoController;
+use App\Http\Controllers\OrderController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,6 +46,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/addtocart/{productId}/{quantity}', [CartController::class, 'addToCart'])->name('addtocart');
     Route::get('/decreasefromcart/{productId}/{quantity}', [CartController::class, 'decreaseFromCart'])->name('decreasefromcart');
     Route::get('/removefromcart/{productId}', [CartController::class, 'removeFromCart'])->name('removefromcart');
+    Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{orderId}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/save-customer-info', [CartController::class, 'saveCustomerInfo'])->name('saveCustomerInfo');
 
 });
 

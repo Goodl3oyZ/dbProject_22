@@ -18,12 +18,12 @@ class CartController extends Controller
         if (!$cart) {
             return view('cart', ['products' => [], 'cartEntries' => []]);
         }
-
         // Get products in the user's cart
         $products = $cart->products()->get();
-
+        // Get the user's current promotion (if any)
+        $promotion = $user->promotion()->latest()->first();
         // Return the view and pass the products to the view
-        return view('cart', compact('products', 'user'));
+        return view('cart', compact('products', 'user', 'promotion'));
     }
 
     public function addToCart($productId, $quantity)
@@ -106,7 +106,21 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Product removed from the cart and stock updated.');
     }
+    public function saveCustomerInfo(Request $request)
+    {
+        // Validate the customer data
+        $validatedData = $request->validate([
+            'customerName' => 'required|string|max:255',
+            'customerAddress' => 'required|string|max:500',
+            'customerPhone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'customerEmail' => 'required|email|max:255',
+        ]);
 
+        // Store the validated customer data in session
+        session(['customerInfo' => $validatedData]);
 
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Customer information saved successfully.');
+    }
 
 }

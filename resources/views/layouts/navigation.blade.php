@@ -22,7 +22,7 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
             <!-- order -->
-            <span class=" underline text-sm text-gray-600 dark:text-gray-400 px-2">รายการคำสั่งซื้อของคุณ</span>
+            <a href="{{ route('orders.index')}}"><span class=" underline text-sm text-gray-600 dark:text-gray-400 px-2">รายการคำสั่งซื้อของคุณ</span></a>
             <!--cart-->
             <div class="px-4"><a href="{{ route('cart')}}"><img src="img/cart.jpg" class="w-auto h-6 px-2" alt="Sample Image" style=" border: 1px solid #fff; border-radius: 12px;"/></a></div>
                 <x-dropdown align="right" width="48">

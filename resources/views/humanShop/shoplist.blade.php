@@ -59,4 +59,8 @@
             }
         }
     </script>
+    <footer class=" text-center text-sm text-black dark:text-white/70 items-end  justify-end p-6">
+        Human_shop Project Database • 2567 :: group21
+
+    </footer>
 </x-app-layout>
