@@ -57,30 +57,6 @@ class UserController extends Controller
         return redirect()->route('profile.edit')->with('status', 'profile-photo-updated');
     }
 
-    public function showType()
-    {
-        // ดึงข้อมูลทั้งหมดจากตาราง personality_types
-        $personalityTypes = PersonalityType::all();
-
-        // ดึงข้อมูลผู้ใช้ที่ล็อกอิน
-        $user = auth()->user();
-
-        // ส่งตัวแปรไปยัง view
-        return view('profile.show-type', compact('personalityTypes', 'user'));
-    }
-
-    public function updateType(Request $request)
-    {
-        $request->validate([
-            'personality_type_id' => 'required|exists:personality_types,id',
-        ]);
-
-        $user = auth()->user();
-        $user->personality_id = $request->input('personality_type_id');
-        $user->save();
-
-        return redirect()->route('profile.show-type')->with('status', 'Personality type updated successfully!');
-    }
     public function showProfile()
     {
         $user = Auth::user();

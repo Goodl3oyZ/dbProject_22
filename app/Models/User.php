@@ -18,11 +18,6 @@ class User extends Authenticatable
         return $this->hasOne(UserBio::class, 'user_id');
     }
 
-    public function diaryEntries()
-    {
-        return $this->hasMany(DiaryEntry::class);
-    }
-
     public function personalityType(): BelongsTo
     {
         return $this->belongsTo(PersonalityType::class, 'personality_id');

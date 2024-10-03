@@ -57,7 +57,7 @@
                 </div>
                 <!-- Include customer info fields here (name, address, phone, email) -->
                 <div style="border: 1px solid white; margin-top: 2rem; width: 40rem; height: auto;"
-                    class="text-white p-4 px-6 rounded-lg">
+                    class="text-white p-4 px-6 rounded-lg text-lg">
                     <div style="border: 1px solid white; width: 10rem;" class="text-center">ข้อมูลลูกค้า</div>
 
                     <!-- Display saved customer info if available -->
@@ -112,12 +112,13 @@
                     @endif
                 </div>
                 <!-- Include a dropdown or radio buttons for the shipping method -->
-                <label for="shippingMethod" class="text-white text-lg mt-4">เลือกวิธีการชำระเงิน:</label>
-                <select id="shippingMethod" name="shippingMethod" class="rounded bg-gray-700 text-black px-8 mt-2 "
-                    style=" display: flex; justify-content: start;">
-                    <option value="online">Online</option>
-                    <option value="delivery">Delivery</option>
-                </select>
+                <div class="mt-4"><label for="shippingMethod" class="text-white text-lg ">เลือกวิธีการชำระเงิน:</label>
+                    <select id="shippingMethod" name="shippingMethod" class="rounded bg-gray-700 text-black px-8 mt-2 "
+                        style=" display: flex; justify-content: start;">
+                        <option value="online">Online</option>
+                        <option value="delivery">Delivery</option>
+                    </select>
+                </div>
                 <!-- Display total price and other cart details here -->
                 <div class="mt-2 mb-4 rounded-lg">
                     <div class="text-white text-lg">ราคาสินค้าทั้งหมด: $ {{ number_format($totalPrice, 2) }}</div>

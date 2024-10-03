@@ -4,20 +4,14 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\DiaryEntryController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CustomerInfoController;
 use App\Http\Controllers\OrderController;
-
-
 Route::get('/', function () {
     return view('welcome');
 });
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     //Route:: get/patch -  เหมือน โชว์ / อัพเดต
     //โดย ผ่าน Controller ที่มี  method ว่าอะไร 
@@ -33,10 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/type', [UserController::class, 'showType'])->name('profile.show-type');
     // Route to handle updating type
     Route::patch('/profile/type', [UserController::class, 'updateType'])->name('profile.update-type');
-    Route::get('/display_diary', [DiaryEntryController::class, 'display_diary'])->name('diary.display_diary');
-    Route::get('/diary_count', [DiaryEntryController::class, 'diary_count'])->name('diary.diary_count');
-    Route::get('/get_conflict', [DiaryEntryController::class, 'get_conflict'])->name('diary.get_conflict');
-    Route::resource('diary', DiaryEntryController::class); //add this
     //name  ด้านหลัง คือไปอ่านมาว่าจะให้ไป ดู php จากไฟล์ ไหนใน view
     Route::get('/products', [ProductController::class, 'showProduct'])->name('humanShop.shoplist');  // Use index method
     // test method
@@ -50,9 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{orderId}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/save-customer-info', [CartController::class, 'saveCustomerInfo'])->name('saveCustomerInfo');
-
 });
-
 Route::post('/profile/photo/update', [UserController::class, 'updateProfilePhoto'])->name('profile.photo.update');
 
 require __DIR__ . '/auth.php';
