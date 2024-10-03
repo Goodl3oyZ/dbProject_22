@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
-use App\Models\Product;
+
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use App\Http\Controllers\Log;
+
 class OrderController extends Controller
 {
     public function index()
@@ -18,58 +17,54 @@ class OrderController extends Controller
 
         return view('orders.index', compact('orders'));
     }
-
     public function checkout(Request $request)
     {
-        $user = Auth::user();
-        $cart = $user->carts;
-        $products = $cart ? $cart->products : [];
-
-        // Validate the customer data and shipping method
+        // ตรวจสอบข้อมูลที่ได้รับจากฟอร์ม
         $validatedData = $request->validate([
             'customerName' => 'required|string|max:255',
             'customerAddress' => 'required|string|max:500',
             'customerPhone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
             'customerEmail' => 'required|email|max:255',
             'shippingMethod' => 'required|in:online,delivery',
-            'totalAmount' => 'required|numeric|min:0', // Validate the total amount
+            'totalAmount' => 'required|numeric|min:0',
         ]);
 
-        // Use the totalAmount passed from the cart page
-        $totalAmountAfterDiscount = $validatedData['totalAmount'];
-
-        // Reduce stock
-        foreach ($products as $product) {
-            $quantity = $product->pivot->quantity;
-            if ($product->stockQuantity >= $quantity) {
-                $product->stockQuantity -= $quantity;
-                $product->save();
-            } else {
-                return redirect()->back()->with('error', 'Not enough stock for ' . $product->productName);
-            }
-        }
-
-        // Create a new order
+        // สร้างคำสั่งซื้อใหม่ (Order)
         $order = new Order();
-        $order->userId = $user->id;
+        $order->userId = Auth::id(); // บันทึก ID ของผู้ใช้
         $order->orderDate = now();
-        $order->totalAmount = $totalAmountAfterDiscount; // Use the total amount from the form
+        $order->totalAmount = $validatedData['totalAmount'];
         $order->shipping = $validatedData['shippingMethod'];
-        $order->save();
+        $order->shippingAddress = $validatedData['customerAddress'];
+        $order->customerName = $validatedData['customerName'];
+        $order->customerPhone = $validatedData['customerPhone'];
+        $order->customerEmail = $validatedData['customerEmail'];
+        $order->save(); // บันทึกข้อมูลลงในฐานข้อมูล
 
-        // Attach products to the order
-        foreach ($cart->products as $product) {
-            $order->products()->attach($product->id, ['quantity' => $product->pivot->quantity]);
+        // ตรวจสอบว่า orderId ถูกต้องหรือไม่
+        if (!$order->orderId) {
+            return redirect()->back()->with('error', 'เกิดข้อผิดพลาดในการสร้างคำสั่งซื้อ');
         }
 
-        // Clear the cart
-        $cart->products()->detach();
+        // เพิ่มสินค้าในตะกร้าไปยังคำสั่งซื้อ
+        $cart = Auth::user()->carts;
+        if ($cart) {
+            foreach ($cart->products as $product) {
+                // แนบสินค้าไปยังคำสั่งซื้อ
+                $order->products()->attach($product->id, ['quantity' => $product->pivot->quantity]);
 
-        // Redirect to the order details page
-        return redirect()->route('orders.show', ['orderId' => $order->id]);
+                // หักลบสต็อกสินค้าตามจำนวนที่สั่งซื้อ
+                $product->stockQuantity -= $product->pivot->quantity;
+                $product->save();
+            }
+
+            // ล้างตะกร้าสินค้า
+            $cart->products()->detach();
+        }
+
+        // เปลี่ยนเส้นทางไปยังหน้าสรุปคำสั่งซื้อ
+        return redirect()->route('orders.show', ['orderId' => $order->orderId]);
     }
-
-
     public function show($orderId)
     {
         $order = Order::with('products')->find($orderId);

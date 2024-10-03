@@ -11,7 +11,9 @@
                 </div>
             </div>
             <!-- Initialize totalPrice -->
-            @php                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       $totalPrice = 0;
+            @php                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                $totalPrice = 0;
+                $totalPrice = 0;
                 $discountPercentage = $promotion ? $promotion->discountPercentage : 0;
             @endphp
             <!-- Display products in the user's cart -->
@@ -50,109 +52,119 @@
             @endforeach
         </div>
         <div>
-            <div class="bg-gray-800 rounded px-6 py-6" style="margin-top: 2rem; border: 1px solid white;">
-                <div class="text-lg p-2 rounded"
-                    style="display: flex; justify-content: center; border: 3px solid black; background-color: aliceblue;">
-                    ข้อมูลการส่งสินค้า
-                </div>
-                <!-- Include customer info fields here (name, address, phone, email) -->
-                <div style="border: 1px solid white; margin-top: 2rem; width: 40rem; height: auto;"
-                    class="text-white p-4 px-6 rounded-lg text-lg">
-                    <div style="border: 1px solid white; width: 10rem;" class="text-center">ข้อมูลลูกค้า</div>
-
-                    <!-- Display saved customer info if available -->
-                    @if(session('customerInfo'))
-                        <div class="mb-2 mt-4">
-                            <p>ชื่อ: {{ session('customerInfo.customerName') }}</p>
-                            <p>ที่อยู่: {{ session('customerInfo.customerAddress') }}</p>
-                            <p>เบอร์: {{ session('customerInfo.customerPhone') }}</p>
-                            <p>อีเมล: {{ session('customerInfo.customerEmail') }}</p>
+            <form action="{{ route('checkout') }}" method="POST" class="flex flex-col">
+                @csrf <!-- CSRF protection -->
+                <div class="bg-gray-800 rounded px-6 py-6" style="margin-top: 2rem; border: 1px solid white;">
+                    <div class="text-lg p-2 rounded-lg"
+                        style="display: flex; justify-content: center; border: 3px solid black; background-color: aliceblue;">
+                        ข้อมูลการส่งสินค้า
+                    </div>
+                    <!-- Include customer info fields here (name, address, phone, email) -->
+                    <div style="border: 1px solid white; margin-top: 2rem; width: 25rem; height: auto;"
+                        class="text-white p-4 px-6 rounded-lg text-lg">
+                        <div style="border: 1px solid white; width: 10rem;" class="text-center rounded-lg">ข้อมูลลูกค้า
                         </div>
-                    @else
-                        <!-- Show the form to input customer data only if it's not saved yet -->
-                        <form action="{{ route('saveCustomerInfo') }}" method="POST" class="flex flex-col">
-                            @csrf <!-- CSRF protection -->
 
-                            <label for="customerName" class="text-white">ชื่อ:</label>
-                            <input type="text" id="customerName" name="customerName"
-                                class="p-2 rounded bg-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="กรอกชื่อของคุณ" value="{{ old('customerName') }}">
-                            @error('customerName')
-                                <div style="color: red; font-size: small;">{{ $message }}</div>
-                            @enderror
+                        <!-- Display saved customer info if available -->
+                        @if(session('customerInfo'))
+                            <div class="mb-2 mt-4">
+                                <p>ชื่อ: {{ session('customerInfo.customerName') }}</p>
+                                <p>ที่อยู่: {{ session('customerInfo.customerAddress') }}</p>
+                                <p>เบอร์: {{ session('customerInfo.customerPhone') }}</p>
+                                <p>อีเมล: {{ session('customerInfo.customerEmail') }}</p>
+                            </div>
+                        @else
+                            <!-- Show the form to input customer data only if it's not saved yet -->
+                            <div class="mt-4 mb-4">
+                                <!-- ชื่อ -->
+                                <div>
+                                    <div><label for="customerName" class="text-white">ชื่อ:</label></div>
+                                    <div class=" px-6"><input type="text" id="customerName" name="customerName"
+                                            class=" p-2 rounded bg-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            placeholder="กรอกชื่อของคุณ" value="{{ old('customerName') }}">
+                                        @error('customerName')
+                                            <div style="color: red; font-size: small;">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- ที่อยู่ -->
+                                <div>
+                                    <div><label for="customerAddress" class="mt-2 text-white">ที่อยู่:</label></div>
+                                    <div class=" px-6"><input type="text" id="customerAddress" name="customerAddress"
+                                            class="p-2 rounded bg-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            placeholder="กรอกที่อยู่ของคุณ" value="{{ old('customerAddress') }}">
+                                        @error('customerAddress')
+                                            <div style="color: red; font-size: small;">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- เบอร์ -->
+                                <div>
+                                    <div><label for="customerPhone" class="mt-2 text-white">เบอร์:</label></div>
+                                    <div class=" px-6"><input type="text" id="customerPhone" name="customerPhone"
+                                            class="p-2 rounded bg-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            placeholder="กรอกเบอร์โทรของคุณ" value="{{ old('customerPhone') }}">
+                                        @error('customerPhone')
+                                            <div style="color: red; font-size: small;">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- อีเมล -->
+                                <div>
+                                    <div><label for="customerEmail" class="mt-2 text-white">อีเมล:</label></div>
+                                    <div class=" px-6"><input type="email" id="customerEmail" name="customerEmail"
+                                            class="p-2 rounded bg-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            placeholder="กรอกอีเมลของคุณ" value="{{ old('customerEmail') }}">
+                                        @error('customerEmail')
+                                            <div style="color: red; font-size: small;">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                    <!-- Shipping Method -->
+                    <div class="mt-4"><label for="shippingMethod"
+                            class="text-white text-lg ">เลือกวิธีการชำระเงิน:</label>
+                        <select type="hidden" id="shippingMethod" name="shippingMethod"
+                            class="rounded bg-gray-700 text-black px-8 mt-2 "
+                            style=" display: flex; justify-content: start;">
+                            <option value="online">Online</option>
+                            <option value="delivery">Delivery</option>
+                        </select>
+                    </div>
+                    <!-- Display total price and other cart details here -->
+                    <div class="mt-2 mb-4 rounded-lg">
+                        <div class="text-white text-lg">ราคาสินค้าทั้งหมด: $ {{ number_format($totalPrice, 2) }}</div>
 
-                            <label for="customerAddress" class="mt-2 text-white">ที่อยู่:</label>
-                            <input type="text" id="customerAddress" name="customerAddress"
-                                class="p-2 rounded bg-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="กรอกที่อยู่ของคุณ" value="{{ old('customerAddress') }}">
-                            @error('customerAddress')
-                                <div style="color: red; font-size: small;">{{ $message }}</div>
-                            @enderror
+                        <!-- Apply the discount if there's a promotion -->
+                        @php
+                            $discountAmount = ($totalPrice * $discountPercentage) / 100;
+                            $totalPriceAfterDiscount = $totalPrice - $discountAmount;
+                        @endphp
 
-                            <label for="customerPhone" class="mt-2 text-white">เบอร์:</label>
-                            <input type="text" id="customerPhone" name="customerPhone"
-                                class="p-2 rounded bg-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="กรอกเบอร์โทรของคุณ" value="{{ old('customerPhone') }}">
-                            @error('customerPhone')
-                                <div style="color: red; font-size: small;">{{ $message }}</div>
-                            @enderror
-
-                            <label for="customerEmail" class="mt-2 text-white">อีเมล:</label>
-                            <input type="email" id="customerEmail" name="customerEmail"
-                                class="p-2 rounded bg-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="กรอกอีเมลของคุณ" value="{{ old('customerEmail') }}">
-                            @error('customerEmail')
-                                <div style="color: red; font-size: small;">{{ $message }}</div>
-                            @enderror
-
-                            <!-- Save Button -->
-                            <button type="submit" class="bg-blue-500 text-white mt-4 p-2 rounded"
-                                style="border: 1px solid white;">Save</button>
-                        </form>
-                    @endif
-                </div>
-                <!-- Include a dropdown or radio buttons for the shipping method -->
-                <div class="mt-4"><label for="shippingMethod" class="text-white text-lg ">เลือกวิธีการชำระเงิน:</label>
-                    <select id="shippingMethod" name="shippingMethod" class="rounded bg-gray-700 text-black px-8 mt-2 "
-                        style=" display: flex; justify-content: start;">
-                        <option value="online">Online</option>
-                        <option value="delivery">Delivery</option>
-                    </select>
-                </div>
-                <!-- Display total price and other cart details here -->
-                <div class="mt-2 mb-4 rounded-lg">
-                    <div class="text-white text-lg">ราคาสินค้าทั้งหมด: $ {{ number_format($totalPrice, 2) }}</div>
-
-                    <!-- Apply the discount if there's a promotion -->
-                    @php
-                        $discountAmount = ($totalPrice * $discountPercentage) / 100;
-                        $totalPriceAfterDiscount = $totalPrice - $discountAmount;
-                    @endphp
-
-                    @if ($promotion)
-                        <div class="text-white text-lg mt-2">ส่วนลดที่คุณมี: {{ $discountPercentage }}%</div>
-                        <div class="text-white text-lg mt-2">ราคาสุทธิ: ${{ number_format($totalPriceAfterDiscount, 2) }}
-                        </div>
-                    @endif
-                </div>
-                <!-- checkout route -->
-                <form action="{{ route('checkout') }}" method="POST">
-                    @csrf
-
+                        @if ($promotion)
+                            <div class="text-white text-lg mt-2">ส่วนลดที่คุณมี: {{ $discountPercentage }}%</div>
+                            <div class="text-white text-lg mt-2">ราคาสุทธิ:
+                                ${{ number_format($totalPriceAfterDiscount, 2) }}
+                            </div>
+                        @endif
+                    </div>
                     <!-- Pass the net total amount to the checkout method -->
                     <input type="hidden" name="totalAmount" value="{{ $totalPriceAfterDiscount }}">
-
-                    <!-- Add other form fields and buttons here -->
+                    <!-- Submit Button -->
                     <div style="display: flex; justify-content: end;">
-                        <button
-                            style="border: 1px solid black; margin-top: 2rem; display: flex; justify-content: center; width: 10rem; background-color: yellow;"
-                            class="p-4 rounded-lg">
-                            <div class="text-black">Check Out</div>
+                        <button type="submit"
+                            style="border: 1px solid black; margin-top: 2rem; display: flex; justify-content: center; width: 10rem; background-color: {{ $products->isEmpty() || $totalPriceAfterDiscount <= 0 ? 'gray' : 'yellow' }};"
+                            class="p-4 rounded-lg text-black" @if($products->isEmpty() || $totalPriceAfterDiscount <= 0)
+                            disabled @endif>
+                            Check Out
                         </button>
+
                     </div>
-                </form>
-            </div>
+            </form>
         </div>
+    </div>
     </div>
     <script>
         function decreaseQuantity(productId) {
@@ -170,6 +182,15 @@
             // Redirect to the remove from cart route with productId
             window.location.href = `/removefromcart/${productId}`;
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            var totalAmount = {{ $totalPriceAfterDiscount }};
+            var checkoutButton = document.getElementById('checkout-button');
+
+            // Disable the checkout button if total amount is 0
+            if (totalAmount <= 0) {
+                checkoutButton.disabled = true;
+            }
+        });
     </script>
     <footer class=" text-center text-sm text-black dark:text-white/70 items-end  justify-end p-6">
         Human_shop Project Database • 2567 :: group21

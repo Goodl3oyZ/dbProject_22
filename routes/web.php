@@ -17,7 +17,9 @@ Route::middleware('auth')->group(function () {
     //โดย ผ่าน Controller ที่มี  method ว่าอะไร 
     //แล้ว จะตั้งชื่อ เส้นทางในการถูก เอาไปเรียกใช้ว่ายังไง ex เรียกใช้ แบบ href="{{ route('dashboard') }}" or "{{route('profile.edit')}}"
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    //ทำงานเมื่อเกิดการเปลี่ยนรูป
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    //ทำงานเมื่อลบ user 
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // Route to show the bio page
     Route::get('/profile/bio', [UserController::class, 'showBio'])->name('profile.show-bio');
@@ -31,8 +33,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/products', [ProductController::class, 'showProduct'])->name('humanShop.shoplist');  // Use index method
     // test method
     Route::get('/cart', [CartController::class, 'showCart'])->name('cart');  // Use index
-    // Route::patch('/products', [CartController::class, 'addToCart'])->name('addtocart');
-    // Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
     Route::get('/addtocart/{productId}/{quantity}', [CartController::class, 'addToCart'])->name('addtocart');
     Route::get('/decreasefromcart/{productId}/{quantity}', [CartController::class, 'decreaseFromCart'])->name('decreasefromcart');
     Route::get('/removefromcart/{productId}', [CartController::class, 'removeFromCart'])->name('removefromcart');

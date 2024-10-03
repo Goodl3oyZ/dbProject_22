@@ -37,4 +37,11 @@ class Products extends Model
             ->withPivot('rating')
             ->withTimestamps();
     }
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_product', 'products_productId', 'order_orderId')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+
 }

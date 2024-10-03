@@ -25,7 +25,6 @@ class CartController extends Controller
         // Return the view and pass the products to the view
         return view('cart', compact('products', 'user', 'promotion'));
     }
-
     public function addToCart($productId, $quantity)
     {
         // ตรวจสอบผู้ใช้ที่ล็อกอินอยู่
