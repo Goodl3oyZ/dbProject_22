@@ -33,15 +33,17 @@ class Products extends Model
     // Uncomment and define this method if you have a Review model
     public function reviews()
     {
-        return $this->belongsToMany(Cart::class, 'review_product')
-            ->withPivot('rating')
-            ->withTimestamps();
+        return $this->hasMany(Review::class, 'productId');
     }
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'order_product', 'products_productId', 'order_orderId')
             ->withPivot('quantity')
             ->withTimestamps();
+    }
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating');
     }
 
 }

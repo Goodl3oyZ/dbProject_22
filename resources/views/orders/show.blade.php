@@ -19,14 +19,21 @@
             <p>ยอดรวม: ${{ number_format($order->totalAmount, 2) }}</p>
 
             <h3 class="text-lg mt-4">รายการสินค้า:</h3>
-            <ul>
-                @foreach ($order->products as $product)
-                    <li>
-                        {{ $product->productName }} - จำนวน: {{ $product->pivot->quantity }} - ราคา:
-                        ${{ number_format($product->price, 2) }}
-                    </li>
-                @endforeach
-            </ul>
+
+            @if ($order->products->isNotEmpty())
+                <ul>
+                    @foreach ($order->products as $product)
+                        <li>
+                            {{ $product->productName }} - จำนวน: {{ $product->pivot->quantity }} - ราคา:
+                            ${{ number_format($product->price, 2) }}
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p>No products found for this order.</p>
+            @endif
+
+
         </div>
 
         <button type="button" onclick="window.location='{{ route('dashboard') }}';"

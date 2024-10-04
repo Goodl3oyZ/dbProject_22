@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -19,7 +21,7 @@ class OrderController extends Controller
     }
     public function checkout(Request $request)
     {
-        // ตรวจสอบข้อมูลที่ได้รับจากฟอร์ม
+        // Validate the request data
         $validatedData = $request->validate([
             'customerName' => 'required|string|max:255',
             'customerAddress' => 'required|string|max:500',
@@ -29,9 +31,9 @@ class OrderController extends Controller
             'totalAmount' => 'required|numeric|min:0',
         ]);
 
-        // สร้างคำสั่งซื้อใหม่ (Order)
+        // Create a new order
         $order = new Order();
-        $order->userId = Auth::id(); // บันทึก ID ของผู้ใช้
+        $order->userId = Auth::id();
         $order->orderDate = now();
         $order->totalAmount = $validatedData['totalAmount'];
         $order->shipping = $validatedData['shippingMethod'];
@@ -39,34 +41,47 @@ class OrderController extends Controller
         $order->customerName = $validatedData['customerName'];
         $order->customerPhone = $validatedData['customerPhone'];
         $order->customerEmail = $validatedData['customerEmail'];
-        $order->save(); // บันทึกข้อมูลลงในฐานข้อมูล
+        $order->save();
 
-        // ตรวจสอบว่า orderId ถูกต้องหรือไม่
+        // Check if the orderId is valid
         if (!$order->orderId) {
-            return redirect()->back()->with('error', 'เกิดข้อผิดพลาดในการสร้างคำสั่งซื้อ');
+            return redirect()->back()->with('error', 'Error creating the order.');
         }
 
-        // เพิ่มสินค้าในตะกร้าไปยังคำสั่งซื้อ
+        // Get the user's cart
         $cart = Auth::user()->carts;
         if ($cart) {
             foreach ($cart->products as $product) {
-                // แนบสินค้าไปยังคำสั่งซื้อ
-                $order->products()->attach($product->id, ['quantity' => $product->pivot->quantity]);
+                // Log::info('Attaching Product ID: ' . $product->productId . ' to Order ID: ' . $order->orderId);
+
+                // Attach the product to the order
+                $order->products()->attach($product->productId, ['quantity' => $product->pivot->quantity]);
+
+                // Update product stock quantity
+                $product->stockQuantity -= $product->pivot->quantity;
                 $product->save();
             }
 
-            // ล้างตะกร้าสินค้า
+            // Clear the cart
             $cart->products()->detach();
         }
 
-        // เปลี่ยนเส้นทางไปยังหน้าสรุปคำสั่งซื้อ
+        // Redirect to the order summary page
         return redirect()->route('orders.show', ['orderId' => $order->orderId]);
     }
+
+
     public function show($orderId)
     {
         $order = Order::with('products')->find($orderId);
+
+        if (!$order) {
+            return redirect()->back()->with('error', 'Order not found.');
+        }
+
+        // Debugging: Check the products associated with the order
+        // dd($order->products);
+
         return view('orders.show', compact('order'));
     }
-
-
 }

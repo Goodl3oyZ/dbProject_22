@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id('orderId');
             $table->foreignId('userId')->constrained('users')->onDelete('cascade');
             $table->timestamp('orderDate');
-            $table->decimal('totalAmount', 10, 2);
+            $table->decimal('totalAmount', 20, 2);
             $table->string('shipping'); // 'online' or 'delivery'
             $table->string('shippingAddress');
             $table->string('customerName');

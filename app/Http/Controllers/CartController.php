@@ -27,35 +27,34 @@ class CartController extends Controller
     }
     public function addToCart($productId, $quantity)
     {
-        // ตรวจสอบผู้ใช้ที่ล็อกอินอยู่
-        $user = Auth::user();
-
-        // ค้นหาตะกร้าของผู้ใช้ หรือสร้างใหม่หากยังไม่มี
-        $cart = $user->carts; // เนื่องจากเป็น hasOne ใช้ carts() โดยไม่ต้องใส่วงเล็บเพื่อเรียกใช้ความสัมพันธ์
-
-        // ตรวจสอบว่า $cart ถูกสร้างขึ้นแล้วและมีค่า
-        if (!$cart) {
-            $cart = Cart::create(['userId' => $user->id, 'amount' => 0]);
-        }
-
-        // ค้นหาสินค้า
+        $cart = Auth::user()->carts;
         $product = Products::find($productId);
 
-        // ตรวจสอบว่าสินค้ามีเพียงพอ
-        if ($product->stockQuantity < $quantity) {
-            return redirect()->back()->with('error', 'สินค้ามีไม่เพียงพอ');
+        if (!$cart || !$product) {
+            return redirect()->back()->with('error', 'Cart or Product not found.');
         }
+        // Check if the product already exists in the cart
+        $existingProduct = $cart->products()->where('products.productId', $productId)->first();
+        if ($existingProduct) {
+            // Increment the quantity instead of replacing it
+            $newQuantity = $existingProduct->pivot->quantity + $quantity;
 
-        // เพิ่มสินค้าลงตะกร้าหรือปรับจำนวน
-        $cart->products()->syncWithoutDetaching([
-            $productId => ['quantity' => $quantity]
-        ]);
-
-        // อัปเดตสต็อกสินค้า
-        $product->stockQuantity -= $quantity;
+            // Check if the new quantity exceeds the stock
+            if ($newQuantity > $product->stockQuantity) {
+                return redirect()->back()->with('error', 'Insufficient stock available.');
+            }
+            // Update the cart product's quantity
+            $cart->products()->updateExistingPivot($productId, ['quantity' => $newQuantity]);
+        } else {
+            // Add new product to the cart if it doesn't exist
+            if ($quantity > $product->stockQuantity) {
+                return redirect()->back()->with('error', 'Insufficient stock available.');
+            }
+            $cart->products()->attach($productId, ['quantity' => $quantity]);
+        }
+        // Reduce the product's stock by the quantity added to the cart
         $product->save();
-
-        return redirect()->back()->with('success', 'เพิ่มสินค้าลงในตะกร้าเรียบร้อยแล้ว');
+        return redirect()->back()->with('success', 'Product added to the cart.');
     }
     public function decreaseFromCart($productId, $quantity)
     {

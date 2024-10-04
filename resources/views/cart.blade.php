@@ -14,12 +14,13 @@
 
             </div>
             @if($products->isEmpty())
-                <div class="text-white " style="display: flex; justify-content: center;">. . . ยังไม่มีสินค้าในตะกร้า . . .
+                <div class="text-white  w-full" style="display: flex; justify-content: center;">. . . ยังไม่มีสินค้าในตะกร้า
+                    . . .
                 </div>
             @endif
             <!-- Initialize totalPrice -->
             @php                      
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                $totalPrice = 0;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    $totalPrice = 0;
                 $totalPrice = 0;
                 $discountPercentage = $promotion ? $promotion->discountPercentage : 0;
             @endphp
@@ -29,7 +30,7 @@
                             // Add to total price
                             $totalPrice += $product->price * $product->pivot->quantity;
                         @endphp
-                        <div class="w-auto h-32 bg-gray-800 rounded-lg p-4 text-center" style="border:1px solid white;">
+                        <div class="w-full bg-gray-800 rounded-lg p-4 text-center " style="border:1px solid white;">
                             <img style="width: 10rem; height: 10rem;" class="object-cover mx-auto rounded"
                                 src="{{ asset($product->products_photo) }}" alt="{{ $product->productName }}">
                             <div class="mt-2 text-lg font-bold text-white">{{ $product->productName }}</div>
@@ -57,6 +58,7 @@
                             </div>
                         </div>
             @endforeach
+
         </div>
         <div>
             <form action="{{ route('checkout') }}" method="POST" class="flex flex-col">

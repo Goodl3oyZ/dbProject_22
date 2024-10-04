@@ -22,11 +22,13 @@ class Order extends Model
         'orderDate' => 'datetime',
     ];
     // สัมพันธ์กับตาราง products
+    // Order.php
     public function products()
     {
         return $this->belongsToMany(Products::class, 'order_product', 'order_orderId', 'products_productId')
             ->withPivot('quantity')
             ->withTimestamps();
     }
+
 
 }
