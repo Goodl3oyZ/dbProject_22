@@ -33,7 +33,7 @@ class ProductController extends Controller
         // Validate input
         $request->validate([
             'rating_' . $productId => 'required|integer|min:1|max:5',
-            'comment_' . $productId => 'nullable|string|max:30',
+            'comment_' . $productId => 'nullable|string|max:20',
         ]);
 
         // Create a new review
