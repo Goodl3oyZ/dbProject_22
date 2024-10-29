@@ -16,7 +16,7 @@
         </h2>
     </x-slot>
     <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 border border-gray-700 rounded-lg">
             <div
                 class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 overflow-hidden shadow-lg sm:rounded-lg">
                 <div class="flex flex-col items-center justify-center p-8 text-white">

@@ -38,9 +38,7 @@
                                     <input type="number" id="product-input-box-{{ $product->productId }}"
                                         class="w-16 p-2 text-gray-900 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
                                         value="{{ $product->pivot->quantity }}" min="1" max="{{ $product->stockQuantity }}"
-                                        onchange="checkStock({{ $product->productId }}, {{ $product->stockQuantity }})">
-                                    <button onclick="decreaseQuantity({{ $product->productId }})"
-                                        class="bg-yellow-500 text-black py-1 px-3 rounded">-</button>
+                                        onchange="setQuantity({{ $product->productId }}, this.value, {{ $product->stockQuantity }})">
                                     <button onclick="removeFromCart({{ $product->productId }})"
                                         class="bg-red-600 text-white py-1 px-3 rounded">Remove</button>
                                 </div>
@@ -130,16 +128,20 @@
     </div>
 
     <script>
-        function decreaseQuantity(productId) {
-            var inputBox = document.getElementById('product-input-box-' + productId);
-            var quantity = parseInt(inputBox.value);
-            if (quantity > 1) {
-                inputBox.value = quantity - 1;
-                window.location.href = `/decreasefromcart/${productId}/1`;
-            } else {
-                alert('กรุณากดปุ่ม "Remove" เพื่อนำสินค้าออกจากตระกร้า');
+        function setQuantity(productId, newQuantity, maxStock) {
+            if (newQuantity < 1) {
+                alert('Quantity cannot be less than 1');
+                document.getElementById('product-input-box-' + productId).value = 1;
+                return;
             }
+            if (newQuantity > maxStock) {
+                alert('Cannot exceed available stock');
+                document.getElementById('product-input-box-' + productId).value = maxStock;
+                return;
+            }
+            window.location.href = `/decreasefromcart/${productId}/${newQuantity}`;
         }
+
         function removeFromCart(productId) {
             window.location.href = `/removefromcart/${productId}`;
         }

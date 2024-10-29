@@ -9,7 +9,7 @@
         <h1 class="text-3xl font-bold mb-6 text-yellow-400 text-center">รายละเอียดคำสั่งซื้อ</h1>
 
         <div class="bg-gray-800 rounded-lg p-6 text-white shadow-lg border border-yellow-400">
-            <h2 class="text-2xl mb-4 font-semibold">Order #{{ $order->orderId }}</h2>
+            <h2 class="text-2xl mb-4 font-semibold">Order In Process</h2>
             <p class="text-lg"><strong>ชื่อผู้รับ:</strong> {{ $order->customerName }}</p>
             <p class="text-lg"><strong>ที่อยู่จัดส่ง:</strong> {{ $order->shippingAddress }}</p>
             <p class="text-lg"><strong>เบอร์โทร:</strong> {{ $order->customerPhone }}</p>

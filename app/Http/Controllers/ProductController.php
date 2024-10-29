@@ -15,36 +15,64 @@ class ProductController extends Controller
     }
     public function storeReview(Request $request, $productId)
     {
-        // Check if the user has purchased the product
-        $user = Auth::user();
-        $orderCount = $user->order()->whereHas('products', function ($query) use ($productId) {
-            $query->where('products.productId', $productId);
-        })->count();
+        try {
+            // Validate input first
+            $validated = $request->validate([
+                'rating_' . $productId => 'required|integer|min:1|max:5',
+                'comment_' . $productId => 'nullable|string|max:255', // Increased max length to be more reasonable
+            ]);
 
-        if ($orderCount <= 0) {
-            // User has not purchased this product, so deny the review
-            return redirect()->back()->with('error', 'You can only review products you have purchased.');
+            $user = Auth::user();
+            
+            // Check if the user has purchased the product
+            $orderCount = $user->order()
+                ->whereHas('products', function ($query) use ($productId) {
+                    $query->where('products.productId', $productId);
+                })
+                ->count();
+
+            if ($orderCount <= 0) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', 'You can only review products you have purchased.');
+            }
+
+            // Check for existing reviews
+            $reviewCount = $user->review()
+                ->where('productId', $productId)
+                ->count();
+                
+            if ($reviewCount >= $orderCount) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', 'You have already reviewed this product the maximum number of times.');
+            }
+
+            // Create the review
+            Review::create([
+                'userId' => $user->id,
+                'productId' => $productId,
+                'rating' => $validated['rating_' . $productId],
+                'comment' => $validated['comment_' . $productId] ?? null,
+            ]);
+
+            return redirect()
+                ->back()
+                ->with('success', 'Review submitted successfully!');
+                
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'An error occurred while submitting your review. Please try again.');
         }
-        // Check if the number of reviews does not exceed the number of orders containing the product
-        $reviewCount = $user->review()->where('productId', $productId)->count();
-        if ($reviewCount >= $orderCount) {
-            return redirect()->back()->with('error', 'You have already reviewed this product the maximum number of times.');
-        }
-        // Validate input
-        $request->validate([
-            'rating_' . $productId => 'required|integer|min:1|max:5',
-            'comment_' . $productId => 'nullable|string|max:20',
-        ]);
-
-        // Create a new review
-        Review::create([
-            'userId' => $user->id,
-            'productId' => $productId,
-            'rating' => $request->input('rating_' . $productId),
-            'comment' => $request->input('comment_' . $productId),
-        ]);
-
-        return redirect()->back()->with('success', 'Review submitted successfully!');
+    }
+    public function showReviews($productId)
+    {
+        $product = Products::with('reviews.user')->findOrFail($productId);
+        return view('humanShop.review', compact('product'));
     }
 
 

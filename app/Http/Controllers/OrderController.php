@@ -21,53 +21,67 @@ class OrderController extends Controller
     }
     public function checkout(Request $request)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'customerName' => 'required|string|max:255',
-            'customerAddress' => 'required|string|max:500',
-            'customerPhone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-            'customerEmail' => 'required|email|max:255',
-            'shippingMethod' => 'required|in:online,delivery',
-            'totalAmount' => 'required|numeric|min:0',
-        ]);
+        // Start database transaction
+        return DB::transaction(function () use ($request) {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'customerName' => 'required|string|max:255',
+                'customerAddress' => 'required|string|max:500',
+                'customerPhone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+                'customerEmail' => 'required|email|max:255',
+                'shippingMethod' => 'required|in:online,delivery',
+                'totalAmount' => 'required|numeric|min:0',
+            ]);
 
-        // Create a new order
-        $order = new Order();
-        $order->userId = Auth::id();
-        $order->orderDate = now();
-        $order->totalAmount = $validatedData['totalAmount'];
-        $order->shipping = $validatedData['shippingMethod'];
-        $order->shippingAddress = $validatedData['customerAddress'];
-        $order->customerName = $validatedData['customerName'];
-        $order->customerPhone = $validatedData['customerPhone'];
-        $order->customerEmail = $validatedData['customerEmail'];
-        $order->save();
+            // Get the user's cart
+            $cart = Auth::user()->carts;
+            if (!$cart || $cart->products->isEmpty()) {
+                throw new \Exception('Cart is empty');
+            }
 
-        // Check if the orderId is valid
-        if (!$order->orderId) {
-            return redirect()->back()->with('error', 'Error creating the order.');
-        }
+            // Verify stock availability for all products
+            foreach ($cart->products as $cartProduct) {
+                // Lock the product row for update to prevent race conditions
+                $product = DB::table('products')
+                    ->where('productId', $cartProduct->productId)
+                    ->lockForUpdate()
+                    ->first();
 
-        // Get the user's cart
-        $cart = Auth::user()->carts;
-        if ($cart) {
-            foreach ($cart->products as $product) {
-                // Log::info('Attaching Product ID: ' . $product->productId . ' to Order ID: ' . $order->orderId);
+                if (!$product || $product->stockQuantity < $cartProduct->pivot->quantity) {
+                    throw new \Exception("Insufficient stock for product: {$cartProduct->productName}");
+                }
+            }
 
-                // Attach the product to the order
-                $order->products()->attach($product->productId, ['quantity' => $product->pivot->quantity]);
+            // Create new order
+            $order = new Order();
+            $order->userId = Auth::id();
+            $order->orderDate = now();
+            $order->totalAmount = $validatedData['totalAmount'];
+            $order->shipping = $validatedData['shippingMethod'];
+            $order->shippingAddress = $validatedData['customerAddress'];
+            $order->customerName = $validatedData['customerName'];
+            $order->customerPhone = $validatedData['customerPhone'];
+            $order->customerEmail = $validatedData['customerEmail'];
+            $order->save();
 
-                // Update product stock quantity
-                $product->stockQuantity -= $product->pivot->quantity;
-                $product->save();
+            // Process each product in the cart
+            foreach ($cart->products as $cartProduct) {
+                // Attach product to order
+                $order->products()->attach($cartProduct->productId, [
+                    'quantity' => $cartProduct->pivot->quantity
+                ]);
+
+                // Update stock quantity using query builder
+                DB::table('products')
+                    ->where('productId', $cartProduct->productId)
+                    ->decrement('stockQuantity', $cartProduct->pivot->quantity);
             }
 
             // Clear the cart
             $cart->products()->detach();
-        }
 
-        // Redirect to the order summary page
-        return redirect()->route('orders.show', ['orderId' => $order->orderId]);
+            return redirect()->route('orders.show', ['orderId' => $order->orderId]);
+        }, 5);
     }
 
 

@@ -25,10 +25,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/bio', [UserController::class, 'showBio'])->name('profile.show-bio');
     // Route to handle updating the bio
     Route::patch('/profile/bio', [UserController::class, 'updateBio'])->name('profile.update-bio');
-    // Route to show the type page
-    Route::get('/profile/type', [UserController::class, 'showType'])->name('profile.show-type');
-    // Route to handle updating type
-    Route::patch('/profile/type', [UserController::class, 'updateType'])->name('profile.update-type');
     //name  ด้านหลัง คือไปอ่านมาว่าจะให้ไป ดู php จากไฟล์ ไหนใน view
     Route::get('/products', [ProductController::class, 'showProduct'])->name('humanShop.shoplist');  // Use index method
     // test method
@@ -40,7 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{orderId}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/save-customer-info', [CartController::class, 'saveCustomerInfo'])->name('saveCustomerInfo');
-    Route::post('/products/{productId}/review', [ProductController::class, 'storeReview'])->name('products.review.store');
+    Route::get('/products/{productId}/reviews', [ProductController::class, 'showReviews'])->name('humanShop.review');
+    Route::post('/products/{productId}/reviews', [ProductController::class, 'storeReview'])->name('humanShop.review.store');
 
 });
 Route::post('/profile/photo/update', [UserController::class, 'updateProfilePhoto'])->name('profile.photo.update');

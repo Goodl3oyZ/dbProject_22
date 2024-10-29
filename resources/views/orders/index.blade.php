@@ -23,7 +23,7 @@
                     <thead class="bg-gray-700">
                         <tr>
                             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                Order ID</th>
+                                Order No</th>
                             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
                                 Order Date</th>
                             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
@@ -35,13 +35,14 @@
                     <tbody class="bg-gray-800 text-gray-200">
                         @foreach($orders as $order)
                             <tr class="hover:bg-gray-700 transition duration-300 ease-in-out">
-                                <td class="px-6 py-4 border-b border-gray-700">{{ $order->orderId }}</td>
+                                <td class="px-6 py-4 border-b border-gray-700">{{ $loop->iteration }}</td>
                                 <td class="px-6 py-4 border-b border-gray-700">{{ $order->orderDate->format('Y-m-d H:i:s') }}
                                 </td>
                                 <td class="px-6 py-4 border-b border-gray-700">${{ number_format($order->totalAmount, 2) }}</td>
                                 <td class="px-6 py-4 border-b border-gray-700">{{ ucfirst($order->shipping) }}</td>
                             </tr>
                         @endforeach
+
                     </tbody>
                 </table>
             @endif

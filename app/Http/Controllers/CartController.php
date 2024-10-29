@@ -33,10 +33,11 @@ class CartController extends Controller
         if (!$cart || !$product) {
             return redirect()->back()->with('error', 'Cart or Product not found.');
         }
+
         // Check if the product already exists in the cart
         $existingProduct = $cart->products()->where('products.productId', $productId)->first();
         if ($existingProduct) {
-            // Increment the quantity instead of replacing it
+            // Calculate new total quantity
             $newQuantity = $existingProduct->pivot->quantity + $quantity;
 
             // Check if the new quantity exceeds the stock
@@ -52,35 +53,29 @@ class CartController extends Controller
             }
             $cart->products()->attach($productId, ['quantity' => $quantity]);
         }
-        // Reduce the product's stock by the quantity added to the cart
-        $product->save();
+
         return redirect()->back()->with('success', 'Product added to the cart.');
     }
-    public function decreaseFromCart($productId, $quantity)
+    public function decreaseFromCart($productId, $newQuantity)
     {
         $user = Auth::user();
         $cart = $user->carts;
-
+        
         if ($cart) {
-            // Get the product in the cart
-            $product = $cart->products()->where('productId', $productId)->first(); // Use 'productId' instead of 'product_id'
-
+            $product = $cart->products()->where('productId', $productId)->first();
+            
             if ($product) {
-                // Decrease quantity in cart
-                $newQuantity = $product->pivot->quantity - $quantity;
-
-                if ($newQuantity > 0) {
-                    // Update the quantity in the cart
-                    $cart->products()->updateExistingPivot($productId, ['quantity' => $newQuantity]);
-
-                    // Increase the stock in the product table
-                    $product->stockQuantity += $quantity;
-                    $product->save();
+                // Validate new quantity against stock
+                if ($newQuantity > $product->stockQuantity) {
+                    return redirect()->back()->with('error', 'Requested quantity exceeds available stock.');
                 }
+                
+                // Update the quantity in the cart
+                $cart->products()->updateExistingPivot($productId, ['quantity' => $newQuantity]);
             }
         }
 
-        return redirect()->back()->with('success', 'Quantity decreased and stock updated.');
+        return redirect()->back()->with('success', 'Quantity updated successfully.');
     }
 
     public function removeFromCart($productId)
@@ -89,20 +84,11 @@ class CartController extends Controller
         $cart = $user->carts;
 
         if ($cart) {
-            // Get the product in the cart
-            $product = $cart->products()->where('productId', $productId)->first(); // Use 'productId' instead of 'product_id'
-
-            if ($product) {
-                // Return the quantity to stock
-                $product->stockQuantity += $product->pivot->quantity;
-                $product->save();
-
-                // Remove the product from the cart
-                $cart->products()->detach($productId);
-            }
+            // Remove the product from the cart
+            $cart->products()->detach($productId);
         }
 
-        return redirect()->back()->with('success', 'Product removed from the cart and stock updated.');
+        return redirect()->back()->with('success', 'Product removed from the cart.');
     }
     public function saveCustomerInfo(Request $request)
     {
