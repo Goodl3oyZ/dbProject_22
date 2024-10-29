@@ -1,50 +1,51 @@
-<section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+<section class="p-10 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl shadow-2xl">
+    <header class="border-b border-gray-700 pb-6 mb-8">
+        <h2 class="text-3xl font-bold text-yellow-500">
             {{ __('Profile Photo') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Update your profile photo.") }}
+        <p class="mt-4 text-lg text-gray-400">
+            {{ __('Update your profile photo.') }}
         </p>
     </header>
 
     <form method="post" action="{{ route('profile.photo.update') }}" enctype="multipart/form-data"
-        class="mt-6 space-y-6">
+        class="space-y-8 bg-gray-900 p-8 rounded-2xl shadow-xl">
         @csrf
-        <div style=" display: flex; justify-content: center; align-items: center;" class="gap-4 p-4">
-            <!-- phofile photo -->
-            <div>
-                <x-input-label for="current_photo" :value="__('Current Profile Photo')" />
-                <div class="mt-1">
-                    @if(Auth::user()->profile_photo)
-                        <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile Photo"
-                            class=" h-32 w-auto object-cover rounded-full" style="width: 8rem; height: 8rem;">
-                    @else
-                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('No profile photo uploaded.') }}</p>
-
-                    @endif
-                </div>
+        <div class="flex flex-col items-center">
+            <x-input-label for="current_photo" :value="__('Current Profile Photo')"
+                class="text-lg font-semibold text-gray-400 text-center" />
+            <div class="mt-6 flex justify-center">
+                <img src="{{ Auth::user()->profile_photo ? asset('storage/' . Auth::user()->profile_photo) : asset('img/default_profile.png') }}"
+                    alt="Profile Photo"
+                    class="h-40 w-40 object-cover rounded-full border-4 border-yellow-500 shadow-lg">
             </div>
-            <div class="flex flex-col gap-4 px-4"><!-- phofile photo choose -->
-                <div>
-                    <x-input-label for="profile_photo" :value="__('Profile Photo')" />
-                    <input type="file" name="profile_photo" id="profile_photo"
-                        class="mt-1 text-sm text-gray-600 dark:text-gray-400 w-full" />
-                    <x-input-error class="mt-2" :messages="$errors->get('profile_photo')" />
-                </div>
-                <!-- save button -->
-                <div class="flex items-center">
-                    <x-primary-button>{{ __('Save') }}</x-primary-button>
 
+        </div>
+        <div class="flex flex-col lg:flex-row justify-center items-center gap-12">
+            <!-- Profile Photo Choose -->
+            <div class="flex flex-col items-center">
+                <div>
+                    <x-input-label for="profile_photo" :value="__('Profile Photo')"
+                        class="text-lg font-semibold text-gray-400" />
+                    <input type="file" name="profile_photo" id="profile_photo"
+                        class="mt-4 text-md text-gray-400 bg-gray-800 border-2 border-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 w-full p-2" />
+                    <x-input-error class="mt-2 text-red-500" :messages="$errors->get('profile_photo')" />
+                </div>
+                <!-- Save Button -->
+                <div class="flex items-center gap-6 mt-6">
+                    <x-primary-button
+                        class="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black px-6 py-3 rounded-full shadow-xl">
+                        {{ __('Save') }}
+                    </x-primary-button>
                     @if (session('status') === 'profile-photo-updated')
-                        <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
-                            class="text-sm text-gray-600 dark:text-gray-400">{{ __('Saved.') }}</p>
+                        <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)"
+                            class="text-md text-yellow-500 font-semibold">
+                            {{ __('Saved.') }}
+                        </p>
                     @endif
                 </div>
             </div>
         </div>
     </form>
-
-
 </section>
