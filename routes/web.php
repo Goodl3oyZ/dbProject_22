@@ -42,5 +42,10 @@ Route::middleware('auth')->group(function () {
 });
 Route::post('/profile/photo/update', [UserController::class, 'updateProfilePhoto'])->name('profile.photo.update');
 
+// เพิ่ม route นี้ในกลุ่ม middleware auth
+Route::get('/member', function () {
+    return view('member');
+})->middleware(['auth', 'verified'])->name('member');
+
 require __DIR__ . '/auth.php';
 

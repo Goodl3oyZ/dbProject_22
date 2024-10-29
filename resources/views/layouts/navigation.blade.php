@@ -15,6 +15,11 @@
                         {{ __('Products') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden sm:flex sm:ml-8">
+                    <x-nav-link :href="route('member')" :active="request()->routeIs('member')" class="text-yellow-400 hover:text-yellow-300 transition-colors duration-300">
+                        {{ __('Member') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
