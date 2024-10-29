@@ -5,7 +5,7 @@
 
 <x-app-layout>
     <div class="container mx-auto px-16 py-8 ">
-        <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-8 max-w-6xl mx-auto">
+        <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-8 max-w-6xl mx-auto">
             <!-- Display all products -->
             @foreach ($products as $product)
                 <div
