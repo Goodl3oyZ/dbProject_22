@@ -80,7 +80,7 @@
                 @endif
             </div>
         </header>
-
+        
         <div class="min-h-screen">
             <!-- Hero Section -->
             <section class="bg-animated-gradient h-[100vh] flex items-center justify-center relative overflow-hidden">

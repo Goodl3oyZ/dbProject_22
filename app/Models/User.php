@@ -13,16 +13,6 @@ use Carbon\Carbon;
 
 class User extends Authenticatable
 {
-    public function bio(): HasOne
-    {
-        return $this->hasOne(UserBio::class, 'user_id');
-    }
-
-    public function personalityType(): BelongsTo
-    {
-        return $this->belongsTo(PersonalityType::class, 'personality_id');
-    }
-
     public function carts()
     {
         return $this->hasOne(Cart::class, 'userId');
