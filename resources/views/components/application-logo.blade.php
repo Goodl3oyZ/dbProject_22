@@ -1,1 +1,1 @@
-<img class="block h-20 rounded-full w-auto fill-current" src="{{ asset('img/group21.jpg') }}" alt="Human Shop">
+<img class="block h-20 rounded-full w-auto fill-current" src="{{ asset('img/Logo.jpg') }}" alt="Human Shop">

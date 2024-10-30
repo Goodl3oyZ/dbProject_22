@@ -29,7 +29,7 @@ class OrderController extends Controller
                 'customerAddress' => 'required|string|max:500',
                 'customerPhone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
                 'customerEmail' => 'required|email|max:255',
-                'shippingMethod' => 'required|in:online,delivery',
+                'shippingMethod' => 'required|in:cash,credit_card,bank_transfer,promptpay',
                 'totalAmount' => 'required|numeric|min:0',
             ]);
 

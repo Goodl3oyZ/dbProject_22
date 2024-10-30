@@ -6,29 +6,37 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
+// เส้นทางที่เข้าถึงได้โดยไม่ต้องล็อกอิน
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [ProductController::class, 'showWelcomePage'])->name('welcome');
+// Route สำหรับการค้นหาปกติ ที่อาจต้องการการเข้าสู่ระบบ
+Route::get('/search', [ProductController::class, 'search'])->name('humanShop.search');
+
+// Group สำหรับการเข้าถึงที่ต้องมีการล็อกอิน
 Route::middleware('auth')->group(function () {
-    //Route:: get/patch -  เหมือน โชว์ / อัพเดต
-    //โดย ผ่าน Controller ที่มี  method ว่าอะไร 
-    //แล้ว จะตั้งชื่อ เส้นทางในการถูก เอาไปเรียกใช้ว่ายังไง ex เรียกใช้ แบบ href="{{ route('dashboard') }}" or "{{route('profile.edit')}}"
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    //ทำงานเมื่อเกิดการเปลี่ยนรูป
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    //ทำงานเมื่อลบ user 
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    // Route to show the bio page
     Route::get('/profile/bio', [UserController::class, 'showBio'])->name('profile.show-bio');
-    // Route to handle updating the bio
     Route::patch('/profile/bio', [UserController::class, 'updateBio'])->name('profile.update-bio');
-    //name  ด้านหลัง คือไปอ่านมาว่าจะให้ไป ดู php จากไฟล์ ไหนใน view
-    Route::get('/products', [ProductController::class, 'showProduct'])->name('humanShop.shoplist');  // Use index method
-    // test method
-    Route::get('/cart', [CartController::class, 'showCart'])->name('cart');  // Use index
+    Route::post('/profile/photo/update', [UserController::class, 'updateProfilePhoto'])->name('profile.photo.update');
+    Route::get('/member', function () {
+        return view('member');
+    })->middleware(['auth', 'verified'])->name('member');
+
+    // Product routes
+    Route::get('/products', [ProductController::class, 'showProduct'])->name('humanShop.shoplist');
+    Route::get('/products/{productId}/reviews', [ProductController::class, 'showReviews'])->name('humanShop.review');
+    Route::post('/products/{productId}/reviews', [ProductController::class, 'storeReview'])->name('humanShop.review.store');
+
+    // Cart and order routes
+    Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
     Route::get('/addtocart/{productId}/{quantity}', [CartController::class, 'addToCart'])->name('addtocart');
     Route::get('/decreasefromcart/{productId}/{quantity}', [CartController::class, 'decreaseFromCart'])->name('decreasefromcart');
     Route::get('/removefromcart/{productId}', [CartController::class, 'removeFromCart'])->name('removefromcart');
@@ -36,16 +44,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{orderId}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/save-customer-info', [CartController::class, 'saveCustomerInfo'])->name('saveCustomerInfo');
-    Route::get('/products/{productId}/reviews', [ProductController::class, 'showReviews'])->name('humanShop.review');
-    Route::post('/products/{productId}/reviews', [ProductController::class, 'storeReview'])->name('humanShop.review.store');
+    Route::get('/humanShop', [ProductController::class, 'index'])->name('humanShop.index');
 
 });
-Route::post('/profile/photo/update', [UserController::class, 'updateProfilePhoto'])->name('profile.photo.update');
-
-// เพิ่ม route นี้ในกลุ่ม middleware auth
-Route::get('/member', function () {
-    return view('member');
-})->middleware(['auth', 'verified'])->name('member');
 
 require __DIR__ . '/auth.php';
+
 

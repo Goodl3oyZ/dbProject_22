@@ -4,38 +4,76 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Human_shop</title>
-    <link rel="icon" href="{{ asset('img/group21.jpg') }}" type="image/jpeg">
+    <title>Human Shop - Quality Second-Hand Essentials</title>
+    <link rel="icon" href="{{ asset('img/Logo.jpg') }}" type="image/jpeg">
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Dark and eerie gradient background */
+        .bg-animated-gradient {
+            background: linear-gradient(135deg, #141414, #1a1a1a, #262626);
+            background-size: 300% 300%;
+            animation: gradientAnimation 15s ease infinite;
+            position: relative;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Text and Button Highlights */
+        .bg-animated-gradient h1,
+        .bg-animated-gradient p {
+            color: rgba(255, 200, 100, 0.9);
+            /* Muted orange */
+        }
+
+        .bg-animated-gradient a {
+            box-shadow: 0px 4px 12px rgba(255, 140, 0, 0.3);
+            /* Orange shadow */
+        }
+    </style>
 </head>
 
 <body class="font-sans antialiased bg-gray-900 text-gray-200">
     <div class="min-h-screen">
         <!-- Header Section -->
-        <header class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 border-b border-gray-700 shadow-2xl">
-            <div class="container mx-auto flex items-center justify-between p-6">
-                <div class="flex items-center">
-                    <img class="h-10 w-10 rounded-full border-2 border-yellow-500" src="{{ asset('img/group21.jpg') }}"
-                        alt="Human Shop">
-                    <span class="ml-4 text-2xl font-bold text-yellow-500">Human Shop</span>
+        <header class="bg-gradient-to-r from-black via-gray-900 to-black border-b border-gray-700 shadow-md">
+            <div class="container mx-auto flex items-center justify-between p-4 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
+                <div class="flex items-center ">
+                    <img class="h-8 w-8 md:h-10 md:w-10 shadow-lg" src="{{ asset('img/Logo.jpg') }}" alt="Human Shop">
+                    <span class="ml-2 text-lg md:text-xl font-bold text-orange-500 tracking-wide">Human Shop</span>
                 </div>
                 <!-- Right: Login & Register -->
                 @if (Route::has('login'))
-                    <nav class="flex gap-4">
+                    <nav class="flex gap-2 md:gap-3">
                         @auth
                             <a href="{{ url('/dashboard') }}"
-                                class="px-4 py-2 border border-yellow-500 text-yellow-500 rounded-lg hover:bg-yellow-500 hover:text-gray-900 transition-all">Dashboard</a>
+                                class="px-2 md:px-3 py-1 text-xs md:text-sm border border-orange-500 text-orange-500 rounded-lg hover:bg-orange-500 hover:text-gray-900 transition">
+                                Dashboard
+                            </a>
                         @else
                             <a href="{{ route('login') }}"
-                                class="px-4 py-2 border border-yellow-500 text-yellow-500 rounded-lg hover:bg-yellow-500 hover:text-gray-900 transition-all">Log
-                                in</a>
+                                class="px-2 md:px-3 py-1 text-xs md:text-sm border border-orange-500 text-orange-500 rounded-lg hover:bg-orange-500 hover:text-gray-900 transition">
+                                Log in
+                            </a>
                             @if (Route::has('register'))
                                 <a href="{{ route('register') }}"
-                                    class="px-4 py-2 border border-yellow-500 text-yellow-500 rounded-lg hover:bg-yellow-500 hover:text-gray-900 transition-all">Register</a>
+                                    class="px-2 md:px-3 py-1 text-xs md:text-sm border border-orange-500 text-orange-500 rounded-lg hover:bg-orange-500 hover:text-gray-900 transition">
+                                    Register
+                                </a>
                             @endif
                         @endauth
                     </nav>
@@ -43,55 +81,121 @@
             </div>
         </header>
 
-        <!-- Main Content Section -->
-        <main class="container mx-auto p-8">
+        <div class="min-h-screen">
+            <!-- Hero Section -->
+            <section class="bg-animated-gradient h-[100vh] flex items-center justify-center relative overflow-hidden">
+                <!-- Background Image -->
+                <img src="{{ asset('img/halloween.jpg') }}" alt="Background Image"
+                    class="absolute inset-0 w-full h-full object-cover opacity-50">
 
-            <!-- Product Section -->
-            <section>
-                <h2 class="text-4xl font-bold text-yellow-500 mb-8 text-center">Our Products</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Product Card -->
-                    @foreach([['Heart', 'หัวใจมือ 2 สภาพดี,สวย พึ่งได้มาสดๆร้อนๆ', 'img/heart.jpg'], ['Kidney', 'ไตสะอาด ปราศจากของเหลวจำพวกปัสสาวะ', 'img/kidney.jpg'], ['Lung', 'ปอดหมู สีสวย ชมพูอมเขียว', 'img/lung.jpg'], ['Liver', 'ตับ ตับ ตับ ตับ ตัวพี่ชอบกินตับเด็ก', 'img/liver.jpg'], ['Bladder', 'กระเพาะปัสสาวะ เหมาะสำหรับคนที่ชอบอั้นฉี่เป็นเวลานานๆ', 'img/bladder.jpg'], ['Intestine', 'ไส้ย่าง สันป่าข่อย', 'img/intestine.jpg']] as $product)
-                        <div
-                            class="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-lg transform transition hover:scale-105">
-                            <img class="h-48 w-full object-cover" src="{{ asset($product[2]) }}" alt="{{ $product[0] }}">
-                            <div class="p-6">
-                                <h3 class="text-2xl font-bold text-yellow-500 mb-2">{{ $product[0] }}</h3>
-                                <p class="text-md text-gray-400">{{ $product[1] }}</p>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                <!-- View more -->
-                <div class="flex justify-center items-center mt-12">
-                    <a href="{{ route('humanShop.shoplist') }}"
-                        class="text-2xl text-yellow-500 hover:underline font-semibold">View More ➔</a>
+                <!-- Overlay and Text -->
+                <div class="text-center bg-black bg-opacity-60 p-6 rounded-lg z-10">
+                    <h1 class="text-4xl font-bold text-orange-500 mb-3">Welcome to Human Shop</h1>
+                    <p class="text-base text-gray-300 mb-4">Discover high-quality, second-hand essentials at affordable
+                        prices.</p>
+                    <a href="#products"
+                        class="px-4 py-2 bg-orange-500 text-gray-900 font-semibold rounded-lg hover:bg-orange-600 transition">
+                        Explore Our Collection
+                    </a>
                 </div>
             </section>
-        </main>
 
-        <!-- Other Detail Section -->
-        <section class="bg-gray-800 text-gray-200 text-center p-10 border-t border-gray-700">
-            <p class="max-w-4xl mx-auto text-lg leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing
-                elit. Quod numquam facilis fugit veritatis tempora maxime voluptates dolor, molestias labore vitae
-                incidunt tenetur commodi est impedit eaque magnam sit omnis consequuntur.</p>
+            <!-- Product Section -->
+            <main class="container mx-auto p-6">
+                <section id="products">
+                    <h2 class="text-3xl font-bold text-orange-500 mb-4 text-start">Top-Rated Products</h2>
+                    <p class="text-sm text-gray-400 text-start mb-8 px-6">Our carefully curated selection ensures
+                        reliability and quality you can trust.</p>
+                    <div class="flex overflow-x-auto space-x-4 p-4 items-center justify-center">
+                        <div class="grid grid-cols-4 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <!-- Product Card -->
+                            @foreach($topRatedProducts as $product)
+                                <div
+                                    class="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-xl group max-w-xs flex-shrink-0">
+                                    <!-- Image Section -->
+                                    <div class="overflow-hidden h-40 w-full">
+                                        <img class="h-full w-full object-cover transform transition-transform duration-300 group-hover:scale-110"
+                                            src="{{ asset($product->products_photo) }}" alt="{{ $product->productName }}">
+                                    </div>
+                                    <div class="p-3">
+                                        <h3 class="text-sm font-semibold text-orange-500 mb-1">{{ $product->productName }}
+                                        </h3>
+                                        <p class="text-xs text-gray-400 mb-2">
+                                            {{ $product->description ?? 'High-quality, pre-loved product' }}
+                                        </p>
+                                        <!-- Rating Stars -->
+                                        <p class="text-xs text-gray-300 flex items-center mb-2">
+                                            <span class="font-semibold mr-1">Rating:</span>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <svg class="w-3 h-3 text-{{ $i <= floor($product->average_rating) ? 'orange-500' : 'gray-400' }}"
+                                                    fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M9.049 2.927a.75.75 0 011.414 0l1.796 3.64 4.02.583a.75.75 0 01.416 1.279l-2.907 2.833.686 4.005a.75.75 0 01-1.086.79L10 13.348l-3.598 1.89a.75.75 0 01-1.086-.79l.686-4.005L3.095 8.43a.75.75 0 01.416-1.279l4.02-.583L9.049 2.927z" />
+                                                </svg>
+                                            @endfor
+                                        </p>
+                                        <a href="{{ route('humanShop.shoplist') }}"
+                                            class="text-xs text-orange-500 font-semibold hover:text-orange-400 transition">Learn
+                                            More</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center items-center mt-8">
+                        <a href="{{ route('humanShop.shoplist') }}"
+                            class="text-lg text-orange-500 font-semibold relative group flex items-center gap-1">
+                            Browse All Products
+                            <svg class="w-4 h-4 text-orange-500 transition-transform group-hover:translate-x-1"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Customer Reviews Section -->
+        <section class="bg-gray-800 p-6 text-center">
+            <h2 class="text-3xl font-bold text-orange-500 mb-4">What Our Customers Say</h2>
+            <p class="text-sm text-gray-400 max-w-2xl mx-auto mb-6">We’re proud to serve our customers with
+                top-notch products and excellent service.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <div class="bg-gray-700 border border-gray-600 rounded-lg p-4 shadow-md max-w-xs">
+                    <p class="text-orange-400 font-semibold mb-1">"Exceptional quality and fast shipping!"</p>
+                    <p class="text-gray-300 text-xs">— John D., Verified Buyer</p>
+                </div>
+                <div class="bg-gray-700 border border-gray-600 rounded-lg p-4 shadow-md max-w-xs">
+                    <p class="text-orange-400 font-semibold mb-1">"The customer support was incredibly helpful."</p>
+                    <p class="text-gray-300 text-xs">— Sarah W., Satisfied Customer</p>
+                </div>
+                <div class="bg-gray-700 border border-gray-600 rounded-lg p-4 shadow-md max-w-xs">
+                    <p class="text-orange-400 font-semibold mb-1">"A truly unique shopping experience."</p>
+                    <p class="text-gray-300 text-xs">— Mike L., Loyal Shopper</p>
+                </div>
+            </div>
         </section>
 
         <!-- Promotion Section -->
-        <section class="bg-yellow-500 text-gray-900 text-center py-12">
-            <h2 class="text-4xl font-bold mb-6">Promotion เด็ดสำหรับลูกค้าใหม่ทุกท่าน</h2>
-            <ul class="list-none text-2xl font-semibold space-y-2">
-                <li>10%</li>
-                <li>20%</li>
-                <li>30%</li>
-                <li>40%</li>
-                <li>90%</li>
-            </ul>
+        <section class="bg-orange-600 text-gray-900 text-center py-8">
+            <h2 class="text-3xl font-bold mb-4">Exclusive Welcome Offer!</h2>
+            <p class="text-lg font-semibold mb-4">Enjoy a surprise discount of up to 30% on your first purchase!</p>
+            <a href="{{ route('humanShop.shoplist') }}"
+                class="px-4 py-2 bg-gray-800 text-orange-500 font-semibold rounded-lg hover:bg-gray-700 transition">Start
+                Shopping Now</a>
         </section>
 
+
         <!-- Footer Section -->
-        <footer class="bg-gray-900 text-center text-sm text-gray-400 py-6 border-t border-gray-700">
-            Human_shop Project Database • 2567 :: group22
+        <footer class="bg-gray-900 text-center text-xs text-gray-400 py-4 border-t border-gray-700">
+            <p>&copy; 2024 Human Shop. All rights reserved.</p>
+            <p>Contact us: <a href="mailto:fifa888@humanshop.com"
+                    class="hover:text-orange-500">fifa888@humanshop.com</a> | Phone: <a href="tel:+660622122468"
+                    class="hover:text-orange-500">062 2122468</a></p>
         </footer>
     </div>
 </body>
