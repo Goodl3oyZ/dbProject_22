@@ -60,7 +60,7 @@
                 <p class="text-lg"><strong>Phone Number:</strong> {{ $order->customerPhone }}</p>
                 <p class="text-lg"><strong>Email:</strong> {{ $order->customerEmail }}</p>
                 <p class="text-lg"><strong>Order Date:</strong> {{ $order->orderDate }}</p>
-                <p class="text-lg"><strong>Payment Method:</strong> {{ ucfirst($order->shippingMethod) }}</p>
+                <p class="text-lg"><strong>Payment Method:</strong> {{ ucfirst($order->shipping) }}</p>
                 <p class="text-lg"><strong>Total Amount:</strong> ${{ number_format($order->totalAmount, 2) }}</p>
 
                 <h3 class="text-xl font-semibold mt-6 mb-4 text-orange-400">Product List:</h3>
